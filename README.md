@@ -9,8 +9,7 @@
 
 ## 关于项目
 
-本项目基于开源项目 **AndroidMath
-** ([https://github.com/gregcockroft/AndroidMath](https://github.com/gregcockroft/AndroidMath))
+本项目基于开源项目 [**AndroidMath**] ([https://github.com/gregcockroft/AndroidMath](https://github.com/gregcockroft/AndroidMath))
 改写而来，将所有代码转换为 Kotlin 并使用 Kotlin Multiplatform 技术实现跨平台支持。通过 Compose
 Multiplatform 为 Android 和 iOS 平台提供高质量的 LaTeX 数学表达式渲染功能。
 
