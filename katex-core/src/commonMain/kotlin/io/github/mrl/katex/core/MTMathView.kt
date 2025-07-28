@@ -1,4 +1,4 @@
-package com.agog.mathdisplay
+package io.github.mrl.katex.core
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
