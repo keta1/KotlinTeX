@@ -1,7 +1,5 @@
 package com.pvporbit.freetype
 
-import okio.IOException
-
 /**
  * Each library is completely independent from the others; it is the root of a set of objects like fonts, faces, sizes, etc.
  */
@@ -21,7 +19,7 @@ class Library(pointer: Long) : Utils.Pointer(pointer) {
         try {
             val byteArray = readAssetFile(file)
             return newFace(byteArray, faceIndex)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             println(e)
         }
         return null
