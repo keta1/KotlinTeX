@@ -10,23 +10,23 @@ publishing {
     publications {
         getByName<MavenPublication>("kotlinMultiplatform") {
             groupId = "io.github.mrl"
-            version = "0.25.0"
+            version = "0.1.0"
 
             pom {
-                name.set("Commonmark-Kotlin")
-                description.set("A multiplatform library for parsing CommonMark Markdown syntax in Kotlin")
-                url.set("https://github.com/master-lzh/commonmark-kotlin")
+                name.set("Katex")
+                description.set("A multiplatform library for rendering LaTeX math expressions on Android/iOS by Compose Multiplatform")
+                url.set("https://github.com/master-lzh/Katex")
 
                 licenses {
                     license {
-                        name.set("BSD 2-Clause License")
-                        url.set("https://opensource.org/licenses/BSD-2-Clause")
+                        name.set("MIT License")
+                        url.set("https://opensource.org/licenses/MIT")
                     }
                 }
                 scm {
-                    url.set("https://github.com/master-lzh/commonmark-kotlin")
-                    connection.set("scm:git:git://github.com/master-lzh/commonmark-kotlin.git")
-                    developerConnection.set("scm:git:git://github.com/master-lzh/commonmark-kotlin.git")
+                    url.set("https://github.com/master-lzh/Katex")
+                    connection.set("scm:git:git://github.com/master-lzh/Katex.git")
+                    developerConnection.set("scm:git:git://github.com/master-lzh/Katex.git")
                 }
             }
         }

@@ -1,5 +1,6 @@
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
+    id("multiplatform")
+    id("publish")
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
@@ -91,10 +92,6 @@ android {
         minSdk = 23
     }
 
-    compileOptions {
-
-    }
-
     externalNativeBuild {
         cmake {
             path = file("src/androidMain/cpp/CMakeLists.txt")
@@ -103,6 +100,10 @@ android {
     }
 }
 
-dependencies {
-
+publishing {
+    publications {
+        getByName<MavenPublication>("kotlinMultiplatform") {
+            artifactId = "katex-core"
+        }
+    }
 }
