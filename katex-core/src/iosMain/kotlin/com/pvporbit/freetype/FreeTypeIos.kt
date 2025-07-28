@@ -5,10 +5,6 @@ package com.pvporbit.freetype
 import kotlinx.cinterop.*
 
 object FreeTypeIos : IFreeType {
-    override fun loadLibrary() {
-
-    }
-
     override fun init(): Long {
         return freetype.init()
     }

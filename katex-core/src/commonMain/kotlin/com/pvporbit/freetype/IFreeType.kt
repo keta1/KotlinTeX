@@ -4,7 +4,6 @@ package com.pvporbit.freetype
 
 
 interface IFreeType {
-    fun loadLibrary()
     fun newLibrary(): Library? {
         val library = FreeType.init()
         if (library == 0L) {

@@ -4,12 +4,12 @@ package com.pvporbit.freetype
 
 import java.nio.ByteBuffer
 
-class FreeTypeAndroid : IFreeType {
+object FreeTypeAndroid : IFreeType {
     init {
         loadLibrary()
     }
 
-    override fun loadLibrary() {
+    private fun loadLibrary() {
         try {
             System.loadLibrary("freetypejni")
             /*
