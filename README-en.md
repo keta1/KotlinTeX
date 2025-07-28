@@ -12,8 +12,8 @@ supporting Android and iOS platforms.
 
 ## About the Project
 
-This project is rewritten based on the open-source project 
-[**AndroidMath**]([https://github.com/gregcockroft/AndroidMath](https://github.com/gregcockroft/AndroidMath)),
+This project is rewritten based on the open-source project
+[**AndroidMath**](https://github.com/gregcockroft/AndroidMath),
 converting all code to Kotlin and implementing cross-platform support using Kotlin Multiplatform
 technology. It provides high-quality LaTeX mathematical expression rendering functionality for
 Android and iOS platforms through Compose Multiplatform.
