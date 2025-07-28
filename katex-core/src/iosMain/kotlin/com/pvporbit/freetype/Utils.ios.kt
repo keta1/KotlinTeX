@@ -1,6 +1,6 @@
 package com.pvporbit.freetype
 
-import katex.katex_core.generated.resources.Res
+import io.github.mrl.katex.core.resources.Res
 import kotlinx.coroutines.runBlocking
 
 actual fun readAssetFile(path: String): ByteArray {
