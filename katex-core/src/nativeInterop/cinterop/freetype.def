@@ -1,0 +1,7 @@
+headers = freetype_cinterop.h
+package = freetype
+
+staticLibraries = libfreetype.a
+libraryPaths.ios_simulator_arm64 = ../external/freetype/output/arm64/iPhoneSimulator/lib
+libraryPaths.ios_arm64 = ../external/freetype/output/arm64/iPhoneOS/lib
+libraryPaths.ios_x64 = ../external/freetype/output/x86_64/iPhoneSimulator/lib
