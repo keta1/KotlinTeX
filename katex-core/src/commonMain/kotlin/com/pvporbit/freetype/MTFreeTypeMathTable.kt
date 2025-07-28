@@ -83,18 +83,13 @@ class MTFreeTypeMathTable(val pointer: Long, val data: NativeBinaryBuffer) {
     init {
         val i = data.remaining()
         val success = FreeType.loadMathTable(pointer, data, data.remaining())
-        println("loadMathTable $success ${data.remaining()} $i")
 
         if (success) {
             val version = data.int
-            println("Math table version $version")
             if (version == 0x00010000) {
                 val mathConstantsOffset = getDataSInt()
-                println(" mathConstantsOffset $mathConstantsOffset")
                 val mathGlyphInfoOffset = getDataSInt()
-                println(" mathGlyphInfoOffset $mathGlyphInfoOffset")
                 val mathVariantsOffset = getDataSInt()
-                println(" mathVariantsOffset $mathVariantsOffset")
                 //println("MathConstants $MathConstants MathGlyphInfo $MathGlyphInfo MathVariants $MathVariants")
                 readConstants(mathConstantsOffset)
 
@@ -193,7 +188,6 @@ class MTFreeTypeMathTable(val pointer: Long, val data: NativeBinaryBuffer) {
     private fun readConstants(foffset: Int) {
         data.position(foffset)
 
-        println("readConstants: offset:$foffset")
         var i = 0
         while (i < constTable.size) {
             val recordtype = constTable[i]

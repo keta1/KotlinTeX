@@ -37,7 +37,7 @@ class Face(pointer: Long) : Utils.Pointer(pointer) {
         get() = FreeType.faceGetFaceIndex(pointer)
 
     val familyName: String
-        get() = FreeType.faceGetFamilyName(pointer).also { println("familyName '$it'") }
+        get() = FreeType.faceGetFamilyName(pointer)
 
     val height: Int
         get() = FreeType.faceGetHeight(pointer)
@@ -58,7 +58,7 @@ class Face(pointer: Long) : Utils.Pointer(pointer) {
         get() = FreeType.faceGetStyleFlags(pointer)
 
     val styleName: String
-        get() = FreeType.faceGetStyleName(pointer).also { println("styleName '$it'") }
+        get() = FreeType.faceGetStyleName(pointer)
 
     val underlinePosition: Int
         get() = FreeType.faceGetUnderlinePosition(pointer)
@@ -168,11 +168,11 @@ class Face(pointer: Long) : Utils.Pointer(pointer) {
     }
 
     fun getGlyphName(glyphIndex: Int): String {
-        return FreeType.getGlyphName(pointer, glyphIndex).also { println("getGlyphName '$it'") }
+        return FreeType.getGlyphName(pointer, glyphIndex)
     }
 
     val postscriptName: String
-        get() = FreeType.getPostscriptName(pointer).also { println("postscriptName '$it'") }
+        get() = FreeType.getPostscriptName(pointer)
 
     fun selectCharMap(encoding: Int): Boolean {
         return FreeType.selectCharMap(pointer, encoding)

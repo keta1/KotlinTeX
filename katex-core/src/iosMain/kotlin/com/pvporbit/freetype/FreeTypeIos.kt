@@ -38,7 +38,6 @@ object FreeTypeIos : IFreeType {
             val lengthVar = nativeHeap.alloc<ULongVar> {
                 value = length.toULong()
             }
-            println("lengthVar = ${lengthVar.value}")
             val result = freetype.FT_Load_Sfnt_Table(
                 face.toCPointer(),
                 freetype.TTAG_MATH.toULong(),
@@ -46,7 +45,6 @@ object FreeTypeIos : IFreeType {
                 data.ptr?.reinterpret(),
                 lengthVar.ptr
             )
-            println("result = $result, FT_Err_Ok = ${freetype.FT_Err_Ok.toInt()}")
             return result != freetype.FT_Err_Ok.toInt()
         }
 //        return freetype.loadMathTable(face, data.ptr?.reinterpret(), length)

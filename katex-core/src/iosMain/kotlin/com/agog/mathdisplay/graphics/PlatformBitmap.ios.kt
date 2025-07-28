@@ -7,7 +7,7 @@ import com.pvporbit.freetype.NativeBinaryBuffer
 import org.jetbrains.skia.Bitmap
 import org.jetbrains.skia.ImageInfo
 
-actual fun createImageBitmapFromFreetypeBitmap(
+internal actual fun createImageBitmapFromFreetypeBitmap(
     width: Int,
     height: Int,
     buffer: NativeBinaryBuffer
@@ -23,7 +23,7 @@ actual fun createImageBitmapFromFreetypeBitmap(
     return bitmap.asComposeImageBitmap()
 }
 
-actual fun createPlatformPaint(): Paint {
+internal actual fun createPlatformPaint(): Paint {
     return Paint().apply {
         isAntiAlias = true
     }

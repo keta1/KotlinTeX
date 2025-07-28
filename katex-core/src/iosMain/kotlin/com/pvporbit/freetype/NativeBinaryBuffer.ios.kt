@@ -30,7 +30,6 @@ actual class NativeBinaryBuffer constructor(actual val size: Int, initPtr: CPoin
         get() {
             require(offset + 3 < limit) { "Buffer underflow" }
             val p = ptr!!
-            println("int: ${p[offset].toInt()} ${p[offset + 1].toInt()} ${p[offset + 2].toInt()} ${p[offset + 3].toInt()}")
             val v = ((p[offset].toInt() and 0xFF) shl 24) or
                     ((p[offset + 1].toInt() and 0xFF) shl 16) or
                     ((p[offset + 2].toInt() and 0xFF) shl 8) or

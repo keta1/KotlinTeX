@@ -7,10 +7,10 @@ import com.pvporbit.freetype.NativeBinaryBuffer
 /**
  * 从 FreeType 位图创建 Compose ImageBitmap
  */
-expect fun createImageBitmapFromFreetypeBitmap(
+internal expect fun createImageBitmapFromFreetypeBitmap(
     width: Int,
     height: Int,
     buffer: NativeBinaryBuffer
 ): ImageBitmap
 
-expect fun createPlatformPaint(): Paint
+internal expect fun createPlatformPaint(): Paint

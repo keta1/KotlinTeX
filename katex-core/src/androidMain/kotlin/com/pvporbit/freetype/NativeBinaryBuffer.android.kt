@@ -10,7 +10,7 @@ actual class NativeBinaryBuffer constructor(
     actual val short: Short
         get() = byteBuffer.short
     actual val int: Int
-        get() = byteBuffer.int.also { println("int: $it") }
+        get() = byteBuffer.int
 
     actual fun position(): Int {
         return byteBuffer.position()

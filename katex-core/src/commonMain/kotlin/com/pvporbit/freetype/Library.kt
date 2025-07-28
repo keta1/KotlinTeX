@@ -32,13 +32,9 @@ class Library(pointer: Long) : Utils.Pointer(pointer) {
      * It will return null in case of error.
      */
     fun newFace(file: ByteArray, faceIndex: Int): Face? {
-        println("file size = ${file.size}")
         val buffer = FreeType.newBuffer(file.size)
-        println("buffer = $buffer")
         buffer.limit(buffer.position() + file.size)
-        println("buffer limit")
         FreeType.fillBuffer(file, buffer, file.size)
-        println("${file.take(4)}")
         return newFace(buffer, faceIndex)
     }
 

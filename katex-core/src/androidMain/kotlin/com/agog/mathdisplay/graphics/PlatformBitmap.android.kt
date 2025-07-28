@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.core.graphics.createBitmap
 import com.pvporbit.freetype.NativeBinaryBuffer
 
-actual fun createImageBitmapFromFreetypeBitmap(
+internal actual fun createImageBitmapFromFreetypeBitmap(
     width: Int,
     height: Int,
     buffer: NativeBinaryBuffer
@@ -18,7 +18,7 @@ actual fun createImageBitmapFromFreetypeBitmap(
     return bitmap.asImageBitmap()
 }
 
-actual fun createPlatformPaint(): Paint {
+internal actual fun createPlatformPaint(): Paint {
     val paint = android.graphics.Paint()
     paint.apply {
         isAntiAlias = true
