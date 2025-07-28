@@ -97,7 +97,6 @@ open class MTDisplay(
                 strokePaint
             )
         }
-
     }
 
     fun displayBounds(): CGRect {
