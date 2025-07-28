@@ -400,9 +400,7 @@ object FreeTypeIos : IFreeType {
     override fun bitmapGetBuffer(bitmap: Long): NativeBinaryBuffer {
         val array = freetype.bitmapGetBuffer(bitmap)
         return array.useContents {
-            val buffer = NativeBinaryBuffer(length)
-            buffer.fill(ptr?.toByteArray(length) ?: byteArrayOf())
-            buffer
+            NativeBinaryBuffer(length, ptr)
         }
     }
 
@@ -412,11 +410,5 @@ object FreeTypeIos : IFreeType {
 
     override fun newBuffer(size: Int): NativeBinaryBuffer {
         return NativeBinaryBuffer(size)
-    }
-}
-
-private fun CPointer<UByteVar>.toByteArray(size: Int): ByteArray {
-    return ByteArray(size) { index ->
-        this[index].toByte()
     }
 }

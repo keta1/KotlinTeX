@@ -5,18 +5,14 @@ package com.pvporbit.freetype
 import kotlinx.cinterop.*
 import platform.posix.memcpy
 
-actual class NativeBinaryBuffer(actual val size: Int) {
-    var byteArray: ByteArray? = null
-        private set
+actual class NativeBinaryBuffer constructor(actual val size: Int, initPtr: CPointer<ByteVar>? = null) {
     var ptr: CPointer<ByteVar>? = null
         private set
     private var offset = 0
     private var limit = size
 
     init {
-        byteArray = ByteArray(size)
-
-        ptr = nativeHeap.allocArray(size)
+        ptr = initPtr ?: nativeHeap.allocArray(size)
         require(ptr != null) { "malloc failed" }
     }
 
