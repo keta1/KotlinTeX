@@ -7,7 +7,7 @@
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false">
             <meta-data
-                android:name="com.mrl.katex.core.AppContextInitializer"
+                android:name="io.github.mrl.katex.core.AppContextInitializer"
                 android:value="androidx.startup" />
         </provider>
     </application>

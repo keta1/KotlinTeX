@@ -1,4 +1,4 @@
-package com.mrl.katex.core
+package io.github.mrl.katex.core
 
 import android.content.Context
 import androidx.startup.Initializer
