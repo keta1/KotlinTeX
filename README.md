@@ -124,6 +124,9 @@ fun LatexList(
 }
 ```
 
+## 展示效果
+https://github.com/user-attachments/assets/ee302c81-8f74-440e-97e0-224ff32b4516
+
 ## 自行构建
 
 ```shell script
