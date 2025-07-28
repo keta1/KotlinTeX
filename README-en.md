@@ -135,6 +135,9 @@ fun LatexList(
 }
 ```
 
+## Display
+https://github.com/user-attachments/assets/ee302c81-8f74-440e-97e0-224ff32b4516
+
 ## Building from Source
 
 ```shell
