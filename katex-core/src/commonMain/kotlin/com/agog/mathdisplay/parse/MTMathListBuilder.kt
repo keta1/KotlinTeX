@@ -15,7 +15,11 @@ import com.agog.mathdisplay.utils.toFixed
 
 // NSString *const MTParseError = "ParseError"
 
-data class MTEnvProperties(var envName: String?, var ended: Boolean = false, var numRows: Long = 0)
+data class MTEnvProperties(
+    var envName: String?,
+    var ended: Boolean = false,
+    var numRows: Long = 0
+)
 
 
 class MTMathListBuilder(str: String) {

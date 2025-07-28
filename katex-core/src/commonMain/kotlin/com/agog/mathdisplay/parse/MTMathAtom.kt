@@ -94,7 +94,10 @@ enum class MTMathAtomType {
 
 const val NSNotFound: Int = -1
 
-data class NSRange(var location: Int = NSNotFound, var length: Int = 0) {
+data class NSRange(
+    var location: Int = NSNotFound,
+    var length: Int = 0
+) {
     // Return true if equal to passed range
     fun equal(cmp: NSRange): Boolean {
         return (cmp.location == this.location && cmp.length == this.length)
@@ -162,7 +165,10 @@ constructor
 
  */
 
-open class MTMathAtom(var type: MTMathAtomType, var nucleus: String) {
+open class MTMathAtom(
+    var type: MTMathAtomType,
+    var nucleus: String
+) {
 
     /** Returns a string representation of the MTMathAtom */
     /** The nucleus of the atom. */
@@ -888,8 +894,6 @@ class MTMathStyle() : MTMathAtom(MTMathAtomType.KMTMathAtomStyle, "") {
         super.copyDeepContent(atom)
         return atom
     }
-
-
 }
 
 

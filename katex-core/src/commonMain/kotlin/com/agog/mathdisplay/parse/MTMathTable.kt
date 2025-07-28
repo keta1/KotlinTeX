@@ -8,8 +8,10 @@ package com.agog.mathdisplay.parse
 enum class MTColumnAlignment {
     /// Align left.
     KMTColumnAlignmentLeft,
+
     /// Align center.
     KMTColumnAlignmentCenter,
+
     /// Align right.
     KMTColumnAlignmentRight
 }

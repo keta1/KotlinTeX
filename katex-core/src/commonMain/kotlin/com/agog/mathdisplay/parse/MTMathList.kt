@@ -74,6 +74,7 @@ class MTMathList {
                         newNode.type = MTMathAtomType.KMTMathAtomUnaryOperator
                     }
                 }
+
                 MTMathAtomType.KMTMathAtomRelation, MTMathAtomType.KMTMathAtomPunctuation, MTMathAtomType.KMTMathAtomClose -> {
                     if (prevNode != null && prevNode.type == MTMathAtomType.KMTMathAtomBinaryOperator) {
                         prevNode.type = MTMathAtomType.KMTMathAtomUnaryOperator
@@ -88,6 +89,7 @@ class MTMathList {
                         skip = true
                     }
                 }
+
                 else -> {
                     // Do nothing
                 }

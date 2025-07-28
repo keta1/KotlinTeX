@@ -7,16 +7,18 @@ import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import com.agog.mathdisplay.graphics.createPlatformPaint
+import com.agog.mathdisplay.parse.MTMathAtom
 import com.agog.mathdisplay.parse.NSNotFound
 import com.agog.mathdisplay.parse.NSRange
-
-import com.agog.mathdisplay.parse.*
-
-import com.agog.mathdisplay.render.MTLinePosition.*
+import com.agog.mathdisplay.render.MTLinePosition.KMTLinePositionRegular
 
 const val IS_DEBUG = false
 
-data class CGPoint(var x: Float = 0.0f, var y: Float = 0.0f)
+data class CGPoint(
+    var x: Float = 0.0f,
+    var y: Float = 0.0f
+)
+
 data class CGRect(
     var x: Float = 0.0f,
     var y: Float = 0.0f,
@@ -25,8 +27,11 @@ data class CGRect(
 )
 
 open class MTDisplay(
-    open var ascent: Float = 0.0f, open var descent: Float = 0.0f, open var width: Float = 0.0f,
-    var range: NSRange = NSRange(), var hasScript: Boolean = false
+    open var ascent: Float = 0.0f,
+    open var descent: Float = 0.0f,
+    open var width: Float = 0.0f,
+    var range: NSRange = NSRange(),
+    var hasScript: Boolean = false
 ) {
 
     var shiftDown: Float = 0.0f
@@ -192,7 +197,11 @@ enum class MTLinePosition {
     KMTLinePositionSuperscript
 }
 
-class MTMathListDisplay(displays: List<MTDisplay>, range: NSRange) : MTDisplay(range = range) {
+class MTMathListDisplay(
+    displays: List<MTDisplay>,
+    range: NSRange
+) :
+    MTDisplay(range = range) {
     /// Where the line is positioned
     var type: MTLinePosition = KMTLinePositionRegular
 
@@ -479,7 +488,11 @@ class MTRadicalDisplay(
 
 // MTGlyphDisplay
 
-class MTGlyphDisplay(val glyph: CGGlyph, range: NSRange, val myfont: MTFont) :
+class MTGlyphDisplay(
+    val glyph: CGGlyph,
+    range: NSRange,
+    val myfont: MTFont
+) :
     MTDisplay(range = range) {
 
     override fun draw(canvas: Canvas) {
@@ -525,7 +538,6 @@ class MTGlyphConstructionDisplay(
 
 
     override fun draw(canvas: Canvas) {
-
         val drawer = MTDrawFreeType(myfont.mathTable)
         canvas.save()
 
@@ -578,8 +590,6 @@ class MTLargeOpLimitsDisplay(
     var extraPadding: Float
 ) :
     MTDisplay() {
-
-
     init {
         var maxWidth: Float = nucleus.width
         if (upperLimit != null) {
@@ -686,7 +696,10 @@ class MTLargeOpLimitsDisplay(
 }
 
 // MTLineDisplay  overline or underline
-class MTLineDisplay(val inner: MTMathListDisplay, range: NSRange) :
+class MTLineDisplay(
+    val inner: MTMathListDisplay,
+    range: NSRange
+) :
     MTDisplay(range = range) {
     // How much the line should be moved up.
     var lineShiftUp: Float = 0.0f
@@ -725,7 +738,11 @@ class MTLineDisplay(val inner: MTMathListDisplay, range: NSRange) :
 
 // MTAccentDisplay
 
-class MTAccentDisplay(val accent: MTGlyphDisplay, val accentee: MTMathListDisplay, range: NSRange) :
+class MTAccentDisplay(
+    val accent: MTGlyphDisplay,
+    val accentee: MTMathListDisplay,
+    range: NSRange
+) :
     MTDisplay(range = range) {
     init {
         accentee.position = CGPoint()

@@ -2,7 +2,11 @@ package com.agog.mathdisplay.render
 
 import com.pvporbit.freetype.Utils
 
-class MTFont(val name: String, val fontSize: Float, isCopy: Boolean = false) {
+class MTFont(
+    val name: String,
+    val fontSize: Float,
+    isCopy: Boolean = false
+) {
     lateinit var mathTable: MTFontMathTable
 
     init {

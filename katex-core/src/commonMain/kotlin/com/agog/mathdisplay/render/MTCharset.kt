@@ -17,10 +17,14 @@ fun numberOfGlyphs(s: String): Int {
     return (s.codePointCount(0, s.length))
 }
 
-data class CGGlyph(var gid: Int = 0, var glyphAscent: Float = 0.0f, var glyphDescent: Float = 0.0f, var glyphWidth: Float = 0.0f) {
+data class CGGlyph(
+    var gid: Int = 0,
+    var glyphAscent: Float = 0.0f,
+    var glyphDescent: Float = 0.0f,
+    var glyphWidth: Float = 0.0f
+) {
     val isValid: Boolean
         get() = gid != 0
-
 }
 
 const val kMTUnicodeGreekLowerStart: Char = '\u03B1'
@@ -88,20 +92,25 @@ fun getItalicized(ch: Char): MTCodepointChar {
         ch == 'h' -> {  // italic h (plank's constant)
             return MTCodepointChar(kMTUnicodePlanksConstant)
         }
+
         isUpperEn(ch) -> {
             return MTCodepointChar(kMTUnicodeMathCapitalItalicStart + (ch - 'A'))
         }
+
         isLowerEn(ch) -> {
             return MTCodepointChar(kMTUnicodeMathLowerItalicStart + (ch - 'a'))
         }
+
         isCapitalGreek(ch) -> {
             // Capital Greek characters
             return MTCodepointChar(kMTUnicodeGreekCapitalItalicStart + (ch - kMTUnicodeGreekCapitalStart))
         }
+
         isLowerGreek(ch) -> {
             // Greek characters
             return MTCodepointChar(kMTUnicodeGreekLowerItalicStart + (ch - kMTUnicodeGreekLowerStart))
         }
+
         isGREEKSYMBOL(ch) -> {
             return MTCodepointChar(kMTUnicodeGreekSymbolItalicStart + greekSymbolOrder(ch))
         }
@@ -123,20 +132,25 @@ fun getBold(ch: Char): MTCodepointChar {
         isUpperEn(ch) -> {
             return MTCodepointChar(kMTUnicodeMathCapitalBoldStart + (ch - 'A'))
         }
+
         isLowerEn(ch) -> {
             return MTCodepointChar(kMTUnicodeMathLowerBoldStart + (ch - 'a'))
         }
+
         isCapitalGreek(ch) -> {
             // Capital Greek characters
             return MTCodepointChar(kMTUnicodeGreekCapitalBoldStart + (ch - kMTUnicodeGreekCapitalStart))
         }
+
         isLowerGreek(ch) -> {
             // Greek characters
             return MTCodepointChar(kMTUnicodeGreekLowerBoldStart + (ch - kMTUnicodeGreekLowerStart))
         }
+
         isGREEKSYMBOL(ch) -> {
             return MTCodepointChar(kMTUnicodeGreekSymbolBoldStart + greekSymbolOrder(ch))
         }
+
         isNumber(ch) -> {
             return MTCodepointChar(kMTUnicodeNumberBoldStart + (ch - '0'))
         }
@@ -156,20 +170,25 @@ fun getBoldItalic(ch: Char): MTCodepointChar {
         isUpperEn(ch) -> {
             return MTCodepointChar(kMTUnicodeMathCapitalBoldItalicStart + (ch - 'A'))
         }
+
         isLowerEn(ch) -> {
             return MTCodepointChar(kMTUnicodeMathLowerBoldItalicStart + (ch - 'a'))
         }
+
         isCapitalGreek(ch) -> {
             // Capital Greek characters
             return MTCodepointChar(kMTUnicodeGreekCapitalBoldItalicStart + (ch - kMTUnicodeGreekCapitalStart))
         }
+
         isLowerGreek(ch) -> {
             // Greek characters
             return MTCodepointChar(kMTUnicodeGreekLowerBoldItalicStart + (ch - kMTUnicodeGreekLowerStart))
         }
+
         isGREEKSYMBOL(ch) -> {
             return MTCodepointChar(kMTUnicodeGreekSymbolBoldItalicStart + greekSymbolOrder(ch))
         }
+
         isNumber(ch) -> {
             // No bold italic for numbers so we just bold them.
             return getBold(ch)
@@ -184,9 +203,11 @@ fun getDefaultStyle(ch: Char): MTCodepointChar {
         isLowerEn(ch) || isUpperEn(ch) || isLowerGreek(ch) || isGREEKSYMBOL(ch) -> {
             return getItalicized(ch)
         }
+
         isNumber(ch) || isCapitalGreek(ch) -> {
             return MTCodepointChar(ch.code)
         }
+
         ch == '.' -> {
             // . is treated as a number in our code, but it doesn't change fonts.
             return MTCodepointChar(ch.code)
@@ -231,6 +252,7 @@ fun getCaligraphic(ch: Char): MTCodepointChar {
         isUpperEn(ch) -> {
             return MTCodepointChar(kMTUnicodeMathCapitalScriptStart + (ch - 'A'))
         }
+
         isLowerEn(ch) -> {
             // Latin Modern Math does not have lower case caligraphic characters, so we use
             // the default style instead of showing a ?
@@ -252,12 +274,15 @@ fun getTypewriter(ch: Char): MTCodepointChar {
         isUpperEn(ch) -> {
             return MTCodepointChar(kMTUnicodeMathCapitalTTStart + (ch - 'A'))
         }
+
         isLowerEn(ch) -> {
             return MTCodepointChar(kMTUnicodeMathLowerTTStart + (ch - 'a'))
         }
+
         isNumber(ch) -> {
             return MTCodepointChar(kMTUnicodeNumberTTStart + (ch - '0'))
         }
+
         else -> {
             // Monospace characters don't exist for greek, we give them the
             // default treatment.
@@ -276,12 +301,15 @@ fun getSansSerif(ch: Char): MTCodepointChar {
         isUpperEn(ch) -> {
             return MTCodepointChar(kMTUnicodeMathCapitalSansSerifStart + (ch - 'A'))
         }
+
         isLowerEn(ch) -> {
             return MTCodepointChar(kMTUnicodeMathLowerSansSerifStart + (ch - 'a'))
         }
+
         isNumber(ch) -> {
             return MTCodepointChar(kMTUnicodeNumberSansSerifStart + (ch - '0'))
         }
+
         else -> {
             // Sans-serif characters don't exist for greek, we give them the
             // default treatment.
@@ -345,9 +373,11 @@ fun getBlackboard(ch: Char): MTCodepointChar {
         isUpperEn(ch) -> {
             return MTCodepointChar(kMTUnicodeMathCapitalBlackboardStart + (ch - 'A'))
         }
+
         isLowerEn(ch) -> {
             return MTCodepointChar(kMTUnicodeMathLowerBlackboardStart + (ch - 'a'))
         }
+
         isNumber(ch) -> {
             return MTCodepointChar(kMTUnicodeNumberBlackboardStart + (ch - '0'))
         }
@@ -362,30 +392,39 @@ fun styleCharacter(ch: Char, fontStyle: MTFontStyle): MTCodepointChar {
         MTFontStyle.KMTFontStyleDefault -> {
             return getDefaultStyle(ch)
         }
+
         MTFontStyle.KMTFontStyleRoman -> {
             return MTCodepointChar(ch.code)
         }
+
         MTFontStyle.KMTFontStyleBold -> {
             return getBold(ch)
         }
+
         MTFontStyle.KMTFontStyleItalic -> {
             return getItalicized(ch)
         }
+
         MTFontStyle.KMTFontStyleBoldItalic -> {
             return getBoldItalic(ch)
         }
+
         MTFontStyle.KMTFontStyleCaligraphic -> {
             return getCaligraphic(ch)
         }
+
         MTFontStyle.KMTFontStyleTypewriter -> {
             return getTypewriter(ch)
         }
+
         MTFontStyle.KMTFontStyleSansSerif -> {
             return getSansSerif(ch)
         }
+
         MTFontStyle.KMTFontStyleFraktur -> {
             return getFraktur(ch)
         }
+
         MTFontStyle.KMTFontStyleBlackboard -> {
             return getBlackboard(ch)
         }

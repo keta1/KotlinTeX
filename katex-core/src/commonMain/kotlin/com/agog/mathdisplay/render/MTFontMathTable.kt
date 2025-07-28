@@ -51,7 +51,10 @@ class BoundingBox() {
     }
 }
 
-class MTFontMathTable(val font: MTFont, fontPath: String? = null) {
+class MTFontMathTable(
+    val font: MTFont,
+    fontPath: String? = null
+) {
     var unitsPerEm: Int = 1
     var fontSize: Float = 0f
     lateinit var freeface: Face
