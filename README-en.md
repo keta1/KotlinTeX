@@ -38,13 +38,35 @@ Android and iOS platforms through Compose Multiplatform.
 
 ### Gradle (Kotlin DSL)
 
-```kotlin
-repositories {
-    maven { url = uri("https://jitpack.io") }
-}
+Add the following to your `settings.gradle.kts`:
 
+```kotlin
+pluginManagement {
+    repositories {
+        mavenCentral() // 或者 maven { url = uri("https://jitpack.io") }
+    }
+}
+```
+
+Then, add the dependency in your `build.gradle.kts`:
+
+### Android
+
+```kotlin
 dependencies {
     implementation("io.github.darriousliu:katex:0.1.0")
+}
+```
+
+### Kotlin Multiplatform
+
+```kotlin
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation("io.github.darriousliu:katex:0.1.0")
+        }
+    }
 }
 ```
 

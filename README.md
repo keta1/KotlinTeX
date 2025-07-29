@@ -34,13 +34,35 @@ Multiplatform 为 Android 和 iOS 平台提供高质量的 LaTeX 数学表达式
 
 ### Gradle (Kotlin DSL)
 
-```kotlin
-repositories {
-    maven { url = uri("https://jitpack.io") }
-}
+将以下内容添加到 `settings.gradle.kts`：
 
+```kotlin
+pluginManagement {
+    repositories {
+        mavenCentral() // 或者 maven { url = uri("https://jitpack.io") }
+    }
+}
+```
+
+然后，在你的 `build.gradle.kts` 中添加依赖：
+
+### Android
+
+```kotlin
 dependencies {
     implementation("io.github.darriousliu:katex:0.1.0")
+}
+```
+
+### Kotlin 多平台
+
+```kotlin
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation("io.github.darriousliu:katex:0.1.0")
+        }
+    }
 }
 ```
 
