@@ -1,4 +1,4 @@
-package io.github.mrl.katex
+package io.github.darriousliu.katex
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

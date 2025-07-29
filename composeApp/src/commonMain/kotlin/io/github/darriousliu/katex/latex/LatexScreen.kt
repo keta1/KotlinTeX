@@ -1,4 +1,4 @@
-package io.github.mrl.katex.latex
+package io.github.darriousliu.katex.latex
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.agog.mathdisplay.utils.MTFontManager
-import io.github.mrl.katex.core.MTMathView
+import io.github.darriousliu.katex.core.MTMathView
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

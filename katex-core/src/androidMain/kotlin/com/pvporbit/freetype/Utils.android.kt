@@ -1,7 +1,7 @@
 package com.pvporbit.freetype
 
 import android.content.Context
-import io.github.mrl.katex.core.resources.Res
+import io.github.darriousliu.katex.core.resources.Res
 
 lateinit var appContext: Context
 

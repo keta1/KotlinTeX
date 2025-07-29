@@ -44,7 +44,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.mrl:katex:0.1.0")
+    implementation("io.github.darriousliu:katex:0.1.0")
 }
 ```
 

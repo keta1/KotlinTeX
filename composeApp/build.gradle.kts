@@ -57,11 +57,11 @@ kotlin {
 }
 
 android {
-    namespace = "io.github.mrl.katex"
+    namespace = "io.github.darriousliu.katex"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "io.github.mrl.katex"
+        applicationId = "io.github.darriousliu.katex"
         minSdk = 23
         targetSdk = 36
         versionCode = 1

@@ -1,4 +1,4 @@
-package io.github.mrl.katex
+package io.github.darriousliu.katex
 
 interface Platform {
     val name: String

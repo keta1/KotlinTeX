@@ -1,4 +1,4 @@
-package io.github.mrl.katex
+package io.github.darriousliu.katex
 
 class Greeting {
     private val platform = getPlatform()

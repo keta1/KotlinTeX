@@ -1,4 +1,4 @@
-package io.github.mrl.katex
+package io.github.darriousliu.katex
 
 import androidx.compose.ui.window.ComposeUIViewController
 

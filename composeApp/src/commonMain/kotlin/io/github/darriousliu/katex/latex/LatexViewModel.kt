@@ -1,4 +1,4 @@
-package io.github.mrl.katex.latex
+package io.github.darriousliu.katex.latex
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

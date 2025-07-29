@@ -90,7 +90,7 @@ compose.resources {
 }
 
 android {
-    namespace = "io.github.mrl.katex.core"
+    namespace = "io.github.darriousliu.katex.core"
     compileSdk = 36
     ndkVersion = "28.1.13356709"
 

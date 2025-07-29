@@ -1,4 +1,4 @@
-package io.github.mrl.katex.core
+package io.github.darriousliu.katex.core
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
