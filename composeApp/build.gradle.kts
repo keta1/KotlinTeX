@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -31,7 +32,11 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
         }
+        sourceSets.commonMain {
+            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+        }
         commonMain.dependencies {
+            implementation(project(":katex-core"))
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -40,6 +45,10 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+
+            // Koin
+            api(project.dependencies.platform(libs.koin.bom))
+            api(libs.bundles.koin)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -76,5 +85,12 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
+    kspCommonMainMetadata(libs.koin.ksp.compiler)
+}
+
+tasks.configureEach {
+    if (name.startsWith("ksp") && name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
 }
 
