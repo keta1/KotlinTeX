@@ -8,7 +8,14 @@ version = "0.1.0"
 
 publishing {
     repositories {
-
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/master-lzh/Katex")
+            credentials {
+                username = System.getenv("GITHUB_PUBLISH_USERNAME")
+                password = System.getenv("GITHUB_PUBLISH_TOKEN")
+            }
+        }
     }
     publications {
         getByName<MavenPublication>("kotlinMultiplatform") {

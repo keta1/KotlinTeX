@@ -10,6 +10,10 @@
 A cross-platform LaTeX mathematical expression rendering library based on Kotlin Multiplatform,
 supporting Android and iOS platforms.
 
+## Display
+
+https://github.com/user-attachments/assets/ee302c81-8f74-440e-97e0-224ff32b4516
+
 ## About the Project
 
 This project is rewritten based on the open-source project
@@ -134,9 +138,6 @@ fun LatexList(
     }
 }
 ```
-
-## Display
-https://github.com/user-attachments/assets/ee302c81-8f74-440e-97e0-224ff32b4516
 
 ## Building from Source
 

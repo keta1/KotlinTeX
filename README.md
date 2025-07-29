@@ -7,6 +7,10 @@
 
 一个基于 Kotlin Multiplatform 的跨平台 LaTeX 数学表达式渲染库，支持 Android 和 iOS 平台。
 
+## 效果展示
+
+https://github.com/user-attachments/assets/ee302c81-8f74-440e-97e0-224ff32b4516
+
 ## 关于项目
 
 本项目基于开源项目 [**AndroidMath**](https://github.com/gregcockroft/AndroidMath)
@@ -15,7 +19,7 @@ Multiplatform 为 Android 和 iOS 平台提供高质量的 LaTeX 数学表达式
 
 ## 特性
 
-- 🚀 基于 Kotlin Multiplatform 技术，Android通过JNI、iOS通过C语言互操作与 FreeType 库集成
+- 🚀 基于 Kotlin Multiplatform 技术，Android通过JNI、iOS通过C interop与 FreeType 库集成
 - 📱 支持 Android 和 iOS 平台
 - 🎨 使用 Compose Multiplatform 进行 UI 渲染
 - 📊 完整的 LaTeX 数学表达式支持
@@ -124,9 +128,6 @@ fun LatexList(
 }
 ```
 
-## 展示效果
-https://github.com/user-attachments/assets/ee302c81-8f74-440e-97e0-224ff32b4516
-
 ## 自行构建
 
 ```shell script
@@ -140,7 +141,7 @@ cd external/freetype
 
 ## 版本历史
 
-- **0.1.0** - 初始版本，支持基本的 LaTeX 数学表达式渲染
+- **0.1.0** - 初始版本，支持基本的 LaTeX 数学表达式渲染，基于 Freetype 2.13.3
 
 ## 致谢
 
