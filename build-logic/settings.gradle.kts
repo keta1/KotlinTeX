@@ -12,4 +12,4 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "build-convention"
+rootProject.name = "build-logic"
