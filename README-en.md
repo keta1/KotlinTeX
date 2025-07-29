@@ -1,6 +1,6 @@
 这是将该README文件翻译成英文的版本：
 
-# Katex
+# KotlinTeX
 
 [English Version](README-en.md) | [中文版本](README.md)
 

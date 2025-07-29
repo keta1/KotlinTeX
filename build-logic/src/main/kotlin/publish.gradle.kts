@@ -10,7 +10,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/master-lzh/Katex")
+            url = uri("https://maven.pkg.github.com/master-lzh/KotlinTeX")
             credentials {
                 username = System.getenv("GITHUB_PUBLISH_USERNAME")
                 password = System.getenv("GITHUB_PUBLISH_TOKEN")
@@ -23,9 +23,9 @@ publishing {
             version = project.version.toString()
 
             pom {
-                name.set("Katex")
+                name.set("KotlinTeX")
                 description.set("A multiplatform library for rendering LaTeX math expressions on Android/iOS by Compose Multiplatform")
-                url.set("https://github.com/master-lzh/Katex")
+                url.set("https://github.com/master-lzh/KotlinTeX")
 
                 licenses {
                     license {
@@ -34,9 +34,9 @@ publishing {
                     }
                 }
                 scm {
-                    url.set("https://github.com/master-lzh/Katex")
-                    connection.set("scm:git:git://github.com/master-lzh/Katex.git")
-                    developerConnection.set("scm:git:git://github.com/master-lzh/Katex.git")
+                    url.set("https://github.com/master-lzh/KotlinTeX")
+                    connection.set("scm:git:git://github.com/master-lzh/KotlinTeX.git")
+                    developerConnection.set("scm:git:git://github.com/master-lzh/KotlinTeX.git")
                 }
             }
         }
