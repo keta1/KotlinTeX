@@ -16,6 +16,7 @@ desugar = "2.1.5"
 startup = "1.2.0"
 koin = "4.1.0"
 koin-annotations = "2.1.0"
+maven-publish = "0.34.0"
 
 
 [libraries]
@@ -42,6 +43,7 @@ desugar = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desuga
 
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+maven-gradlePlugin = { group = "com.vanniktech.maven.publish", name = "com.vanniktech.maven.publish.gradle.plugin", version.ref = "maven-publish" }
 
 # Koin
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin" }

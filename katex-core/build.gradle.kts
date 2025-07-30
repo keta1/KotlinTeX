@@ -106,10 +106,6 @@ android {
     }
 }
 
-publishing {
-    publications {
-        getByName<MavenPublication>("kotlinMultiplatform") {
-            artifactId = "katex-core"
-        }
-    }
+mavenPublishing {
+    coordinates(group.toString(), "katex-core", version.toString())
 }
