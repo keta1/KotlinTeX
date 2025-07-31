@@ -98,6 +98,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyPassword }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKey }}
         run: |
-          ./gradlew publish \
+          ./gradlew publishAllPublicationsToGitHubPackagesRepository \
             -PGitHubPackagesUsername=$GITHUB_USERNAME \
             -PGitHubPackagesPassword=$GITHUB_TOKEN
+          ./gradlew publishToMavenCentral
