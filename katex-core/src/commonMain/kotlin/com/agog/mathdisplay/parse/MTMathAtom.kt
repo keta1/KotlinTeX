@@ -103,12 +103,12 @@ data class NSRange(
         return (cmp.location == this.location && cmp.length == this.length)
     }
 
-    val maxrange
+    val maxRange
         get() = location + length
 
     fun union(a: NSRange): NSRange {
         val b = this
-        val e = maxOf(a.maxrange, b.maxrange)
+        val e = maxOf(a.maxRange, b.maxRange)
         val s = minOf(a.location, b.location)
         return NSRange(s, e - s)
     }
@@ -177,7 +177,7 @@ open class MTMathAtom(
     var superScript: MTMathList? = null
         set(value) {
             if (!this.scriptsAllowed()) {
-                throw MathDisplayException("Superscripts not allowed for atom " + this)
+                throw MathDisplayException("Superscripts not allowed for atom $this")
             }
             field = value
         }
@@ -186,7 +186,7 @@ open class MTMathAtom(
     var subScript: MTMathList? = null
         set(value) {
             if (!this.scriptsAllowed()) {
-                throw MathDisplayException("Subscripts not allowed for atom " + this)
+                throw MathDisplayException("Subscripts not allowed for atom $this")
             }
             field = value
         }
@@ -204,7 +204,7 @@ open class MTMathAtom(
     // This will be the zero Range until finalize is called on the MTMathList
     var indexRange: NSRange = NSRange(0, 0)
 
-    private fun dumpstr(s: String) {
+    private fun dumpStr(s: String) {
         val ca = s.toCharArray()
         val cp = Utils.codePointAt(ca, 0)
         println("str $s codepoint $cp")
@@ -504,15 +504,15 @@ open class MTMathAtom(
 
     /// Fuse the given atom with this one by combining their nucleii.
     fun fuse(atom: MTMathAtom) {
-        if (this.subScript != null) throw MathDisplayException("Cannot fuse into an atom which has a subscript: " + this)
-        if (this.superScript != null) throw MathDisplayException("Cannot fuse into an atom which has a superscript: " + this)
-        if (this.type != atom.type) throw MathDisplayException("Only atoms of the same type can be fused: " + this + " " + atom)
+        if (this.subScript != null) throw MathDisplayException("Cannot fuse into an atom which has a subscript: $this")
+        if (this.superScript != null) throw MathDisplayException("Cannot fuse into an atom which has a superscript: $this")
+        if (this.type != atom.type) throw MathDisplayException("Only atoms of the same type can be fused: $this $atom")
 
         // Update the fused atoms list
-        if (this.fusedAtoms.size == 0) {
+        if (this.fusedAtoms.isEmpty()) {
             this.fusedAtoms.add(this.copyDeep())
         }
-        if (atom.fusedAtoms.size != 0) {
+        if (atom.fusedAtoms.isNotEmpty()) {
             this.fusedAtoms.addAll(atom.fusedAtoms.toTypedArray())
         } else {
             this.fusedAtoms.add(atom)
@@ -570,17 +570,17 @@ class MTFraction() : MTMathAtom(MTMathAtomType.KMTMathAtomFraction, "") {
             str += "[$this.leftDelimiter][$this.rightDelimiter]"
         }
 
-        var nstr = ""
+        var nStr = ""
         val num: MTMathList? = this.numerator
         if (num != null) {
-            nstr = MTMathListBuilder.toLatexString(num)
+            nStr = MTMathListBuilder.toLatexString(num)
         }
-        var dstr = ""
+        var dStr = ""
         val den: MTMathList? = this.denominator
         if (den != null) {
-            dstr = MTMathListBuilder.toLatexString(den)
+            dStr = MTMathListBuilder.toLatexString(den)
         }
-        str += "{$nstr}{$dstr}"
+        str += "{$nStr}{$dStr}"
 
         return super.toStringSubs(str)
     }
@@ -624,17 +624,17 @@ class MTRadical : MTMathAtom(MTMathAtomType.KMTMathAtomRadical, "") {
 
         val deg: MTMathList? = this.degree
         if (deg != null) {
-            val dstr = MTMathListBuilder.toLatexString(deg)
-            str += "[$dstr]"
+            val dStr = MTMathListBuilder.toLatexString(deg)
+            str += "[$dStr]"
         }
 
         val rad: MTMathList? = this.radicand
-        var rstr = ""
+        var rStr = ""
         if (rad != null) {
-            rstr = MTMathListBuilder.toLatexString(rad)
+            rStr = MTMathListBuilder.toLatexString(rad)
         }
 
-        str += "{$rstr}"
+        str += "{$rStr}"
 
         return super.toStringSubs(str)
     }
@@ -708,12 +708,12 @@ class MTInner : MTMathAtom(MTMathAtomType.KMTMathAtomInner, "") {
         }
 
         val il: MTMathList? = this.innerList
-        var istr = ""
+        var iStr = ""
         if (il != null) {
-            istr = MTMathListBuilder.toLatexString(il)
+            iStr = MTMathListBuilder.toLatexString(il)
         }
 
-        str += "{$istr}"
+        str += "{$iStr}"
 
         val rb = this.rightBoundary
         if (rb != null) {
@@ -751,12 +751,12 @@ class MTOverLine : MTMathAtom(MTMathAtomType.KMTMathAtomOverline, "") {
 
     override fun toLatexString(): String {
         val il: MTMathList? = this.innerList
-        var istr = ""
+        var iStr = ""
         if (il != null) {
-            istr = MTMathListBuilder.toLatexString(il)
+            iStr = MTMathListBuilder.toLatexString(il)
         }
 
-        return "{$istr}"
+        return "{$iStr}"
     }
 
     override fun copyDeep(): MTOverLine {
@@ -785,12 +785,12 @@ class MTUnderLine : MTMathAtom(MTMathAtomType.KMTMathAtomUnderline, "") {
 
     override fun toLatexString(): String {
         val il: MTMathList? = this.innerList
-        var istr = ""
+        var iStr = ""
         if (il != null) {
-            istr = MTMathListBuilder.toLatexString(il)
+            iStr = MTMathListBuilder.toLatexString(il)
         }
 
-        return "{$istr}"
+        return "{$iStr}"
     }
 
     override fun copyDeep(): MTUnderLine {
@@ -818,12 +818,12 @@ class MTAccent(nucleus: String) : MTMathAtom(MTMathAtomType.KMTMathAtomAccent, n
 
     override fun toLatexString(): String {
         val il: MTMathList? = this.innerList
-        var istr = ""
+        var iStr = ""
         if (il != null) {
-            istr = MTMathListBuilder.toLatexString(il)
+            iStr = MTMathListBuilder.toLatexString(il)
         }
 
-        return "{$istr}"
+        return "{$iStr}"
     }
 
     override fun copyDeep(): MTAccent {

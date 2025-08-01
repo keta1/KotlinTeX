@@ -2,9 +2,9 @@ package com.agog.mathdisplay.render
 
 object MTColor {
     const val BLACK = 0xFF000000.toInt()
-    const val DKGRAY = 0xFF444444.toInt()
+    const val DARK_GRAY = 0xFF444444.toInt()
     const val GRAY = 0xFF888888.toInt()
-    const val LTGRAY = 0xFFCCCCCC.toInt()
+    const val LIGHT_GRAY = 0xFFCCCCCC.toInt()
     const val WHITE = 0xFFFFFFFF.toInt()
     const val RED = 0xFFFF0000.toInt()
     const val GREEN = 0xFF00FF00.toInt()

@@ -47,12 +47,12 @@ class MTMathTable() : MTMathAtom(MTMathAtomType.KMTMathAtomTable, "") {
 
         atom.cells = mutableListOf()
         for (row in this.cells) {
-            val newrow = mutableListOf<MTMathList>()
+            val newRow = mutableListOf<MTMathList>()
             for (i in 0 until row.size) {
-                val newcol = row[i].copyDeep()
-                newrow.add(newcol)
+                val newCol = row[i].copyDeep()
+                newRow.add(newCol)
             }
-            atom.cells.add(newrow)
+            atom.cells.add(newRow)
         }
 
         atom.interColumnSpacing = this.interColumnSpacing
@@ -106,10 +106,10 @@ class MTMathTable() : MTMathAtom(MTMathAtomType.KMTMathAtomTable, "") {
     }
 
     fun getAlignmentForColumn(column: Int): MTColumnAlignment {
-        if (this.alignments.size <= column) {
-            return MTColumnAlignment.KMTColumnAlignmentCenter
+        return if (this.alignments.size <= column) {
+            MTColumnAlignment.KMTColumnAlignmentCenter
         } else {
-            return this.alignments[column]
+            this.alignments[column]
         }
     }
 

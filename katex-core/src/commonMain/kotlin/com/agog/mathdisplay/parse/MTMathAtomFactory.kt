@@ -107,8 +107,8 @@ open class MTMathAtomFactory {
     }
 
     fun boundaryAtomForDelimiterName(delimName: String): MTMathAtom? {
-        val delimValue = delimiters[delimName] ?: return null
-        return MTMathAtom(MTMathAtomType.KMTMathAtomBoundary, delimValue)
+        val delimiterValue = delimiters[delimName] ?: return null
+        return MTMathAtom(MTMathAtomType.KMTMathAtomBoundary, delimiterValue)
     }
 
     fun delimiterNameForBoundaryAtom(boundary: MTMathAtom): String? {

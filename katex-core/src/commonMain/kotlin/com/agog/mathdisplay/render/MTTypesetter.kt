@@ -20,7 +20,7 @@ const val kJotMultiplier = 0.3f // A jot is 3pt for a 10pt font.
 
 class MTTypesetter(
     val font: MTFont,
-    linestyle: MTLineStyle,
+    lineStyle: MTLineStyle,
     var cramped: Boolean = false,
     var spaced: Boolean = false
 ) {
@@ -39,7 +39,7 @@ class MTTypesetter(
         }
 
     init {
-        this.style = linestyle
+        this.style = lineStyle
     }
 
     companion object {
@@ -74,7 +74,7 @@ class MTTypesetter(
             val typesetter = MTTypesetter(font, style, cramped, spaced)
             typesetter.createDisplayAtoms(preprocessedAtoms)
             val lastAtom = mathList.atoms.lastOrNull()
-            val maxrange = lastAtom?.indexRange?.maxrange ?: 0
+            val maxrange = lastAtom?.indexRange?.maxRange ?: 0
             val line = MTMathListDisplay(typesetter.displayAtoms, NSRange(0, maxrange))
             return line
         }
@@ -460,7 +460,7 @@ class MTTypesetter(
                             // Add a kern of delta
                             currentPosition.x += delta
                         }
-                        this.makeScripts(atom, line, atom.indexRange.maxrange - 1, delta)
+                        this.makeScripts(atom, line, atom.indexRange.maxRange - 1, delta)
                     }
                 }
             }

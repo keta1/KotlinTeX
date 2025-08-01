@@ -16,8 +16,8 @@ class MTDrawFreeType(val mathFont: MTFontMathTable) {
 
         // 先用 NO_RENDER 模式获取字形信息（不加载实际 bitmap）
         if (gid != 0 && !face.loadGlyph(gid, FreeTypeConstants.FT_LOAD_NO_BITMAP)) {
-            val gslot = face.glyphSlot
-            val metrics = gslot?.metrics
+            val glyphSlot = face.glyphSlot
+            val metrics = glyphSlot?.metrics
 
             if (metrics != null) {
                 // 根据 metrics 估算实际渲染尺寸
@@ -29,9 +29,9 @@ class MTDrawFreeType(val mathFont: MTFontMathTable) {
 
                 val cachedBitmap = BitmapCache[cacheKey]
                 if (cachedBitmap != null) {
-                    val offx = metrics.horiBearingX / 64.0f
-                    val offy = metrics.horiBearingY / 64.0f
-                    canvas.drawImage(cachedBitmap, Offset(x + offx, y - offy), p)
+                    val offsetX = metrics.horiBearingX / 64.0f
+                    val offsetY = metrics.horiBearingY / 64.0f
+                    canvas.drawImage(cachedBitmap, Offset(x + offsetX, y - offsetY), p)
                     return
                 }
             }
@@ -40,29 +40,29 @@ class MTDrawFreeType(val mathFont: MTFontMathTable) {
 
         /* load glyph image into the slot and render (erase previous one) */
         if (gid != 0 && !face.loadGlyph(gid, FreeTypeConstants.FT_LOAD_RENDER)) {
-            val gslot = face.glyphSlot
-            val plainbitmap = gslot?.bitmap
-            if (plainbitmap != null) {
-                if (plainbitmap.width == 0 || plainbitmap.rows == 0) {
+            val glyphSlot = face.glyphSlot
+            val plainBitmap = glyphSlot?.bitmap
+            if (plainBitmap != null) {
+                if (plainBitmap.width == 0 || plainBitmap.rows == 0) {
                     if (gid != 1 && gid != 33) {
                         throw MathDisplayException("missing glyph slot $gid.")
                     }
                 } else {
                     val cacheKey =
-                        "$gid-${mathFont.font.name}-${mathFont.font.fontSize}-${plainbitmap.width}x${plainbitmap.rows}"
+                        "$gid-${mathFont.font.name}-${mathFont.font.fontSize}-${plainBitmap.width}x${plainBitmap.rows}"
                     val cachedBitmap = BitmapCache[cacheKey]
                     val bitmap = cachedBitmap ?: createImageBitmapFromFreetypeBitmap(
-                        plainbitmap.width,
-                        plainbitmap.rows,
-                        plainbitmap.buffer
+                        plainBitmap.width,
+                        plainBitmap.rows,
+                        plainBitmap.buffer
                     ).also {
                         BitmapCache[cacheKey] = it
                     }
-                    val metrics = gslot.metrics!!
-                    val offx =
+                    val metrics = glyphSlot.metrics!!
+                    val offsetX =
                         metrics.horiBearingX / 64.0f  // 26.6 fixed point integer from freetype
-                    val offy = metrics.horiBearingY / 64.0f
-                    canvas.drawImage(bitmap, Offset(x + offx, y - offy), p)
+                    val offsetY = metrics.horiBearingY / 64.0f
+                    canvas.drawImage(bitmap, Offset(x + offsetX, y - offsetY), p)
                 }
             }
         }

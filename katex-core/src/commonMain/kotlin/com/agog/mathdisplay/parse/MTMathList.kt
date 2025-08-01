@@ -21,7 +21,7 @@ class MTMathList {
     fun addAtom(atom: MTMathAtom) {
         if (!isAtomAllowed(atom)) {
             val s = MTMathAtom.typeToText(atom.type)
-            throw MathDisplayException("Cannot add atom of type $s in a mathlist ")
+            throw MathDisplayException("Cannot add atom of type $s in a mathList ")
         }
         atoms.add(atom)
     }
@@ -29,7 +29,7 @@ class MTMathList {
     fun insertAtom(atom: MTMathAtom, index: Int) {
         if (!isAtomAllowed(atom)) {
             val s = MTMathAtom.typeToText(atom.type)
-            throw MathDisplayException("Cannot add atom of type $s in a mathlist ")
+            throw MathDisplayException("Cannot add atom of type $s in a mathList ")
         }
         atoms.add(index, atom)
     }

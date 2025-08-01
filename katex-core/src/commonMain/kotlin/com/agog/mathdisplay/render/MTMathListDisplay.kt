@@ -261,30 +261,30 @@ class MTMathListDisplay(
 
 
     fun recomputeDimensions() {
-        var max_ascent = 0.0f
-        var max_descent = 0.0f
-        var max_width = 0.0f
+        var maxAscent = 0.0f
+        var maxDescent = 0.0f
+        var maxWidth = 0.0f
         val sd = this.subDisplays
         if (sd != null) {
             for (atom in sd.toList()) {
                 val ascent = maxOf(0.0f, atom.position.y + atom.ascent)
-                if (ascent > max_ascent) {
-                    max_ascent = ascent
+                if (ascent > maxAscent) {
+                    maxAscent = ascent
                 }
 
                 val descent = maxOf(0.0f, 0 - (atom.position.y - atom.descent))
-                if (descent > max_descent) {
-                    max_descent = descent
+                if (descent > maxDescent) {
+                    maxDescent = descent
                 }
                 val width = atom.width + atom.position.x
-                if (width > max_width) {
-                    max_width = width
+                if (width > maxWidth) {
+                    maxWidth = width
                 }
             }
         }
-        this.ascent = max_ascent
-        this.descent = max_descent
-        this.width = max_width
+        this.ascent = maxAscent
+        this.descent = maxDescent
+        this.width = maxWidth
     }
 
 }
@@ -490,7 +490,7 @@ class MTRadicalDisplay(
 class MTGlyphDisplay(
     val glyph: CGGlyph,
     range: NSRange,
-    val myfont: MTFont
+    val myFont: MTFont
 ) :
     MTDisplay(range = range) {
 
@@ -499,7 +499,7 @@ class MTGlyphDisplay(
         val textPaint = createPlatformPaint()
         textPaint.isAntiAlias = true
         textPaint.color = Color(textColor)
-        val drawer = MTDrawFreeType(myfont.mathTable)
+        val drawer = MTDrawFreeType(myFont.mathTable)
 
         canvas.save()
         canvas.translate(position.x, position.y - this.shiftDown)
@@ -528,7 +528,7 @@ class MTGlyphDisplay(
 class MTGlyphConstructionDisplay(
     val glyphs: MutableList<Int>,
     val offsets: MutableList<Float>,
-    val myfont: MTFont
+    val myFont: MTFont
 ) :
     MTDisplay() {
     init {
@@ -537,7 +537,7 @@ class MTGlyphConstructionDisplay(
 
 
     override fun draw(canvas: Canvas) {
-        val drawer = MTDrawFreeType(myfont.mathTable)
+        val drawer = MTDrawFreeType(myFont.mathTable)
         canvas.save()
 
         // Make the current position the origin as all the positions of the sub atoms are relative to the origin.
@@ -548,17 +548,17 @@ class MTGlyphConstructionDisplay(
         val textPaint = createPlatformPaint()
         textPaint.isAntiAlias = true
         textPaint.color = Color(textColor)
-        //textPaint.setTextSize(myfont.fontSize)
-        //textPaint.setTypeface(myfont.typeface)
+        //textPaint.setTextSize(myFont.fontSize)
+        //textPaint.setTypeface(myFont.typeface)
 
         for (i in 0 until glyphs.count()) {
-            //val textstr = myfont.getGlyphString(glyphs[i])
+            //val textStr = myFont.getGlyphString(glyphs[i])
             canvas.save()
             canvas.translate(0f, offsets[i])
             canvas.scale(1.0f, -1.0f)
             drawer.drawGlyph(canvas, textPaint, glyphs[i], 0.0f, 0.0f)
 
-            //canvas.drawText(textstr, 0.0f, 0.0f, textPaint)
+            //canvas.drawText(textStr, 0.0f, 0.0f, textPaint)
             canvas.restore()
         }
 
@@ -739,30 +739,30 @@ class MTLineDisplay(
 
 class MTAccentDisplay(
     val accent: MTGlyphDisplay,
-    val accentee: MTMathListDisplay,
+    val accentDisplay: MTMathListDisplay,
     range: NSRange
 ) :
     MTDisplay(range = range) {
     init {
-        accentee.position = CGPoint()
+        accentDisplay.position = CGPoint()
         super.range = range.copy()
     }
 
     override fun colorChanged() {
-        this.accentee.textColor = this.textColor
+        this.accentDisplay.textColor = this.textColor
         this.accent.textColor = this.textColor
     }
 
     override fun positionChanged() {
-        this.updateAccenteePosition()
+        this.updateAccentPosition()
     }
 
-    fun updateAccenteePosition() {
-        this.accentee.position = CGPoint(this.position.x, this.position.y)
+    fun updateAccentPosition() {
+        this.accentDisplay.position = CGPoint(this.position.x, this.position.y)
     }
 
     override fun draw(canvas: Canvas) {
-        this.accentee.draw(canvas)
+        this.accentDisplay.draw(canvas)
 
         canvas.save()
 

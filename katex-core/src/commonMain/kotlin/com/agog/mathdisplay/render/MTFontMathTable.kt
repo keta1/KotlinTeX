@@ -57,7 +57,7 @@ class MTFontMathTable(
 ) {
     var unitsPerEm: Int = 1
     var fontSize: Float = 0f
-    lateinit var freeface: Face
+    lateinit var freeFace: Face
     lateinit var freeTypeMathTable: MTFreeTypeMathTable
 
     /*
@@ -80,13 +80,13 @@ class MTFontMathTable(
                 ?: throw MathDisplayException("Error initializing FreeType.")
             println("FreeType library version: ${library.version}")
 
-            freeface = library.newFace(fontPath, 0)!!
-            println("FreeType face loaded: ${freeface.familyName} (${freeface.faceIndex})")
+            freeFace = library.newFace(fontPath, 0)!!
+            println("FreeType face loaded: ${freeFace.familyName} (${freeFace.faceIndex})")
             checkFontSize()
-            unitsPerEm = freeface.unitsPerEM
+            unitsPerEm = freeFace.unitsPerEM
 
 
-            freeTypeMathTable = freeface.loadMathTable()
+            freeTypeMathTable = freeFace.loadMathTable()
 
 
             /**
@@ -109,8 +109,8 @@ class MTFontMathTable(
     }
 
     fun checkFontSize(): Face {
-        freeface.setCharSize(0, (fontSize * 64).toInt(), 0, 0)
-        return freeface
+        freeFace.setCharSize(0, (fontSize * 64).toInt(), 0, 0)
+        return freeFace
     }
 
     // Lightweight copy
@@ -118,32 +118,32 @@ class MTFontMathTable(
         val copyTable = MTFontMathTable(font, null)
         copyTable.fontSize = size
         copyTable.unitsPerEm = this.unitsPerEm
-        copyTable.freeface = this.freeface
+        copyTable.freeFace = this.freeFace
         copyTable.freeTypeMathTable = this.freeTypeMathTable
 
         return copyTable
     }
 
     fun getGlyphName(gid: Int): String {
-        val g = this.freeface.getGlyphName(gid)
+        val g = this.freeFace.getGlyphName(gid)
         return g
     }
 
     fun getGlyphWithName(glyphName: String): Int {
-        val g = this.freeface.getGlyphIndexByName(glyphName)
+        val g = this.freeFace.getGlyphIndexByName(glyphName)
         return g
     }
 
     fun getGlyphForCodepoint(codepoint: Int): Int {
-        val g = this.freeface.getCharIndex(codepoint)
+        val g = this.freeFace.getCharIndex(codepoint)
         return g
     }
 
     fun getAdvancesForGlyphs(glyphs: List<Int>, advances: Array<Float>, count: Int) {
         for (i in 0 until count) {
-            if (!freeface.loadGlyph(glyphs[i], FT_LOAD_NO_SCALE)) {
-                val gslot = freeface.glyphSlot
-                val a = gslot?.advance
+            if (!freeFace.loadGlyph(glyphs[i], FT_LOAD_NO_SCALE)) {
+                val glyphSlot = freeFace.glyphSlot
+                val a = glyphSlot?.advance
                 if (a != null) {
                     advances[i] = fontUnitsToPt(a.x)
                 }
@@ -169,10 +169,10 @@ class MTFontMathTable(
         val enclosing = BoundingBox()
 
         for (i in 0 until count) {
-            if (!freeface.loadGlyph(glyphs[i], FT_LOAD_NO_SCALE)) {
+            if (!freeFace.loadGlyph(glyphs[i], FT_LOAD_NO_SCALE)) {
                 val nb = BoundingBox()
-                val gslot = freeface.glyphSlot
-                val m = gslot?.metrics!!
+                val glyphSlot = freeFace.glyphSlot
+                val m = glyphSlot?.metrics!!
 
                 val w = fontUnitsToPt(m.width)
                 val h = fontUnitsToPt(m.height)
@@ -454,10 +454,10 @@ class MTFontMathTable(
         val glyphName = this.font.getGlyphName(glyph)
         // Find the first variant with a different name.
         val variantGlyphs = freeTypeMathTable.getVerticalVariantsForGlyph(glyph)
-        for (vglyph in variantGlyphs) {
-            val vname = this.font.getGlyphName(vglyph)
-            if (vname != glyphName) {
-                return font.getGlyphWithName(vname)
+        for (vGlyph in variantGlyphs) {
+            val vName = this.font.getGlyphName(vGlyph)
+            if (vName != glyphName) {
+                return font.getGlyphWithName(vName)
             }
         }
         // We did not find any variants of this glyph so return it.

@@ -221,9 +221,9 @@ const val kMTUnicodeMathCapitalScriptStart = 0x1D49C
 // this should be applicable.
 // static const MTCodepointChar kMTUnicodeMathLowerScriptStart = 0x1D4B6;
 
-// mathcal/mathscr (caligraphic or script)
-fun getCaligraphic(ch: Char): MTCodepointChar {
-    // Caligraphic has lots of exceptions:
+// mathcal/mathscr (calligraphic or script)
+fun getCalligraphicChar(ch: Char): MTCodepointChar {
+    // Calligraphic has lots of exceptions:
     when (ch) {
         'B' ->
             return MTCodepointChar(0x212C)   // Script B (bernoulli)
@@ -254,12 +254,12 @@ fun getCaligraphic(ch: Char): MTCodepointChar {
         }
 
         isLowerEn(ch) -> {
-            // Latin Modern Math does not have lower case caligraphic characters, so we use
+            // Latin Modern Math does not have lower case calligraphic characters, so we use
             // the default style instead of showing a ?
             return getDefaultStyle(ch)
         }
     }
-    // Caligraphic characters don't exist for greek or numbers, we give them the
+    // Calligraphic characters don't exist for greek or numbers, we give them the
     // default treatment.
     return getDefaultStyle(ch)
 }
@@ -357,7 +357,7 @@ fun getBlackboard(ch: Char): MTCodepointChar {
         'C' ->
             return MTCodepointChar(0x2102)  // Complex numbers
         'H' ->
-            return MTCodepointChar(0x210D)  // Quarternions
+            return MTCodepointChar(0x210D)  // Quaternions
         'N' ->
             return MTCodepointChar(0x2115)   // Natural numbers
         'P' ->
@@ -410,7 +410,7 @@ fun styleCharacter(ch: Char, fontStyle: MTFontStyle): MTCodepointChar {
         }
 
         MTFontStyle.KMTFontStyleCaligraphic -> {
-            return getCaligraphic(ch)
+            return getCalligraphicChar(ch)
         }
 
         MTFontStyle.KMTFontStyleTypewriter -> {
