@@ -174,7 +174,8 @@ cd external/freetype
 
 ## Version History
 
-- **0.1.0** - Initial release with basic LaTeX mathematical expression rendering support
+- **0.1.0** - Initial release with basic LaTeX mathematical expression rendering support, based on
+  Freetype 2.13.3.
 
 ## Acknowledgments
 
