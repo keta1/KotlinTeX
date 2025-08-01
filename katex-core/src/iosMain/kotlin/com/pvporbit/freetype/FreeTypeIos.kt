@@ -3,6 +3,7 @@
 package com.pvporbit.freetype
 
 import kotlinx.cinterop.*
+import platform.posix.free
 
 object FreeTypeIos : IFreeType {
     override fun init(): Long {
@@ -19,6 +20,8 @@ object FreeTypeIos : IFreeType {
             LibraryVersion(intArray[0], intArray[1], intArray[2])
         } else {
             LibraryVersion(0, 0, 0)
+        }.also {
+            free(intArray)
         }
     }
 
@@ -34,8 +37,8 @@ object FreeTypeIos : IFreeType {
 
     override fun loadMathTable(face: Long, data: NativeBinaryBuffer, length: Int): Boolean {
         require(data.ptr != null) { "data.ptr is null" }
-        memScoped {
-            val lengthVar = nativeHeap.alloc<ULongVar> {
+        return memScoped {
+            val lengthVar = alloc<ULongVar> {
                 value = length.toULong()
             }
             val result = freetype.FT_Load_Sfnt_Table(
@@ -45,7 +48,7 @@ object FreeTypeIos : IFreeType {
                 data.ptr?.reinterpret(),
                 lengthVar.ptr
             )
-            return result != freetype.FT_Err_Ok.toInt()
+            result != freetype.FT_Err_Ok.toInt()
         }
 //        return freetype.loadMathTable(face, data.ptr?.reinterpret(), length)
     }
@@ -137,6 +140,8 @@ object FreeTypeIos : IFreeType {
             Kerning(longArray[0], longArray[1])
         } else {
             Kerning(0, 0)
+        }.also {
+            free(longArray)
         }
     }
 
@@ -184,6 +189,8 @@ object FreeTypeIos : IFreeType {
             longArrayOf(uLongArray[0].toLong(), uLongArray[1].toLong())
         } else {
             longArrayOf()
+        }.also {
+            free(uLongArray)
         }
     }
 
@@ -311,6 +318,8 @@ object FreeTypeIos : IFreeType {
             longArrayOf(longArray[0], longArray[1])
         } else {
             longArrayOf(0, 0)
+        }.also {
+            free(longArray)
         }
     }
 

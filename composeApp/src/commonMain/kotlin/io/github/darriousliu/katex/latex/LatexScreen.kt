@@ -2,16 +2,18 @@ package io.github.darriousliu.katex.latex
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.agog.mathdisplay.utils.MTFontManager
 import io.github.darriousliu.katex.core.MTMathView
+import io.github.darriousliu.katex.core.MTMathViewMode
 import org.koin.compose.viewmodel.koinViewModel
 
 enum class LatexType {
@@ -20,7 +22,7 @@ enum class LatexType {
     LATEX,
 }
 
-val latexType = LatexType.MATH_ITEMS
+val latexType = LatexType.MATH_LIST
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,6 +38,9 @@ fun LatexScreen(
         mutableStateOf(MTFontManager.defaultFont())
     }
     var currentFont by remember { mutableIntStateOf(0) }
+
+    var mode by remember { mutableStateOf(MTMathViewMode.KMTMathViewModeDisplay) }
+    var color by remember { mutableStateOf(Color.Black) }
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -77,7 +82,55 @@ fun LatexScreen(
                             "40sp" to 40.sp
                         )
                     )
-
+                    MenuAction(
+                        onClick = {
+                            mode = it ?: MTMathViewMode.KMTMathViewModeDisplay
+                        },
+                        text = "Mode",
+                        current = mode,
+                        menus = listOf(
+                            "Display" to MTMathViewMode.KMTMathViewModeDisplay,
+                            "Text" to MTMathViewMode.KMTMathViewModeText,
+                        )
+                    )
+                    MenuAction(
+                        onClick = {
+                            color = it ?: Color.Black
+                        },
+                        text = "Text Color",
+                        current = color,
+                        menus = listOf(
+                            "Black" to Color.Black,
+                            "Red" to Color.Red,
+                            "Green" to Color.Green,
+                            "Blue" to Color.Blue,
+                            "Gray" to Color.Gray,
+                            "White" to Color.White,
+                            "Yellow" to Color.Yellow,
+                            "Cyan" to Color.Cyan,
+                            "Magenta" to Color.Magenta,
+                            "Pink" to Color(0xFFFFC0CB), // 粉色
+                            "Orange" to Color(0xFFFFA500), // 橙色
+                            "Purple" to Color(0xFF800080), // 紫色
+                            "Brown" to Color(0xFFA52A2A), // 棕色
+                            "Teal" to Color(0xFF008080), // 水鸭色
+                            "Lime" to Color(0xFF00FF00), // 青柠
+                            "Olive" to Color(0xFF808000), // 橄
+                            "Navy" to Color(0xFF000080), // 海军蓝
+                            "Maroon" to Color(0xFF800000), // 栗色
+                            "Gold" to Color(0xFFFFD700), // 金色
+                            "Silver" to Color(0xFFC0C0C0), // 银色
+                            "Lavender" to Color(0xFFE6E6FA), // 薰衣草色
+                            "Coral" to Color(0xFFFF7F50), // 珊瑚色
+                            "Sky Blue" to Color(0xFF87CEEB), // 天空蓝
+                            "Light Green" to Color(0xFF90EE90), // 浅绿色
+                            "Dark Gray" to Color(0xFFA9A9A9A), // 深灰色
+                            "Dark Red" to Color(0xFF8B0000), // 深红色
+                            "Dark Green" to Color(0xFF006400), // 深绿色
+                            "Dark Blue" to Color(0xFF00008B), // 深蓝色
+                            "Dark Cyan" to Color(0xFF008B8B), // 深水鸭色
+                        )
+                    )
                 }
             )
         },
@@ -109,38 +162,42 @@ fun LatexScreen(
         ) {
             when (latexType) {
                 LatexType.MATH_ITEMS -> {
-                    items(
+                    itemsIndexed(
                         items = mathItems,
-                        key = { it.latex }
-                    ) {
+                        key = { index, _ -> index }
+                    ) { _, item ->
                         MTMathView(
-                            mathItem = it,
+                            mathItem = item,
                         )
                     }
                 }
 
                 LatexType.MATH_LIST -> {
-                    items(
+                    itemsIndexed(
                         items = mathList,
-                        key = { it }
-                    ) { math ->
+                        key = { index, _ -> index }
+                    ) { _, math ->
                         MTMathView(
                             mathList = math,
                             fontSize = fontSize,
                             font = mtFont,
+                            mode = mode,
+                            textColor = color,
                         )
                     }
                 }
 
                 LatexType.LATEX -> {
-                    items(
+                    itemsIndexed(
                         items = latexList,
-                        key = { it }
-                    ) {
+                        key = { index, _ -> index }
+                    ) { _, item ->
                         MTMathView(
-                            latex = it,
+                            latex = item,
                             fontSize = fontSize,
                             font = mtFont,
+                            mode = mode,
+                            textColor = color,
                         )
                     }
                 }
