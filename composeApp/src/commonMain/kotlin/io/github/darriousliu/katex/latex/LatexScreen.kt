@@ -14,6 +14,14 @@ import com.agog.mathdisplay.utils.MTFontManager
 import io.github.darriousliu.katex.core.MTMathView
 import org.koin.compose.viewmodel.koinViewModel
 
+enum class LatexType {
+    MATH_ITEMS, // 用于显示 MathItem 列表
+    MATH_LIST,  // 用于显示 MathList 列表
+    LATEX,
+}
+
+val latexType = LatexType.MATH_ITEMS
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LatexScreen(
@@ -73,27 +81,71 @@ fun LatexScreen(
                 }
             )
         },
-        contentWindowInsets = ScaffoldDefaults.contentWindowInsets.only(WindowInsetsSides.Top),
     ) {
         LaunchedEffect(Unit) {
-            viewModel.parseLatex()
+            when (latexType) {
+                LatexType.MATH_ITEMS -> {
+                    viewModel.parseMathItems()
+                }
+
+                LatexType.MATH_LIST -> {
+                    viewModel.parseMathList()
+                }
+
+                LatexType.LATEX -> {
+                    viewModel.parseLatexList()
+                }
+            }
         }
-        val state by viewModel.state.collectAsStateWithLifecycle()
+
+        val mathList by viewModel.mathList.collectAsStateWithLifecycle()
+        val mathItems by viewModel.mathItems.collectAsStateWithLifecycle()
+        val latexList by viewModel.latexList.collectAsStateWithLifecycle()
         LazyColumn(
             modifier = Modifier
                 .padding(it)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(40.dp),
         ) {
-            items(
-                items = state,
-                key = { it.toString() }
-            ) {
-                MTMathView(
-                    mathList = it,
-                    font = mtFont,
-                    fontSize = fontSize,
-                )
+            when (latexType) {
+                LatexType.MATH_ITEMS -> {
+                    items(
+                        items = mathItems,
+                        key = { it.latex }
+                    ) {
+                        MTMathView(
+                            mathItem = it,
+                        )
+                    }
+                }
+
+                LatexType.MATH_LIST -> {
+                    items(
+                        items = mathList,
+                        key = { it }
+                    ) { math ->
+                        MTMathView(
+                            mathList = math,
+                            fontSize = fontSize,
+                            font = mtFont,
+                        )
+                    }
+                }
+
+                LatexType.LATEX -> {
+                    items(
+                        items = latexList,
+                        key = { it }
+                    ) {
+                        MTMathView(
+                            latex = it,
+                            fontSize = fontSize,
+                            font = mtFont,
+                        )
+                    }
+                }
+
+                else -> {}
             }
         }
     }

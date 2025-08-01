@@ -2,35 +2,72 @@ package io.github.darriousliu.katex.latex
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.agog.mathdisplay.parse.MTMathList
-import com.agog.mathdisplay.parse.MTMathListBuilder
-import com.agog.mathdisplay.parse.MTParseError
-import com.agog.mathdisplay.parse.MTParseErrors
+import io.github.darriousliu.katex.core.MathItem
+import com.agog.mathdisplay.parse.*
+import com.agog.mathdisplay.render.MTTypesetter
+import com.agog.mathdisplay.utils.MTFontManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 import kotlin.random.Random
 
+
 @KoinViewModel
 class LatexViewModel : ViewModel() {
-    val state = MutableStateFlow(emptyList<MTMathList>())
+    val mathItems = MutableStateFlow(emptyList<MathItem>())
+    val mathList = MutableStateFlow(emptyList<MTMathList>())
+    val latexList = MutableStateFlow(emptyList<String>())
+    val font = MTFontManager.defaultFont().copyFontWithSize(60f) // 使用固定大小预计算
 
-    fun parseLatex() {
+    fun parseMathItems() {
         viewModelScope.launch(Dispatchers.Default) {
-            state.value = latexFormulas.mapNotNull { latex ->
+            mathItems.value = SAMPLE_LATEX.mapNotNull { latex ->
                 if (latex.isNotEmpty()) {
                     val newParseError = MTParseError()
                     val list = MTMathListBuilder.buildFromString(latex, newParseError)
-                    if (newParseError.errorCode != MTParseErrors.ErrorNone) {
-                        null
-                    } else {
-                        list
-                    }
+                    if (list != null && newParseError.errorCode == MTParseErrors.ErrorNone) {
+                        val displayList = MTTypesetter.createLineForMathList(
+                            list,
+                            font,
+                            MTLineStyle.KMTLineStyleDisplay
+                        )
+                        MathItem(
+                            displayList = displayList,
+                            width = displayList.width,
+                            height = displayList.ascent + displayList.descent,
+                            latex = latex
+                        )
+                    } else null
+
                 } else {
                     null
                 }
             }
+        }
+    }
+
+    fun parseMathList() {
+        viewModelScope.launch(Dispatchers.Default) {
+            mathList.value = SAMPLE_LATEX.mapNotNull { latex ->
+                if (latex.isNotEmpty()) {
+                    val newParseError = MTParseError()
+                    val list = MTMathListBuilder.buildFromString(latex, newParseError)
+                    if (list != null && newParseError.errorCode == MTParseErrors.ErrorNone) {
+                        list
+                    } else null
+                } else {
+                    null
+                }
+            }
+        }
+    }
+
+    fun parseLatexList() {
+        viewModelScope.launch(Dispatchers.Default) {
+            latexList.value = SAMPLE_LATEX.filter { it.isNotBlank() && !it.startsWith("#") }
+                .distinct()
+                .map { it.trim() }
         }
     }
 }
@@ -180,7 +217,7 @@ x{\scriptstyle y}z
 x \mathrm x \mathbf x \mathcal X \mathfrak x \mathsf x \bm x \mathtt x \mathit \Lambda \cal g
 \mathrm{using\ mathrm}
 \text{using text}
-\text{Mary has }\${'$'}500 + \${'$'}200.
+\text{Mary has }\$500 + \$200.
 
 a = \begin{cases} \nabla \cdot \mathbf{E} = \frac{\rho}{\epsilon_0} \end{cases}
 
