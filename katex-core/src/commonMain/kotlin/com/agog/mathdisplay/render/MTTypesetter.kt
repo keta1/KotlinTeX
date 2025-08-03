@@ -23,7 +23,8 @@ class MTTypesetter(
     lineStyle: MTLineStyle,
     var cramped: Boolean = false,
     var spaced: Boolean = false
-) {
+)
+{
     var displayAtoms: MutableList<MTDisplay> = mutableListOf()
     val currentPosition: CGPoint = CGPoint(0f, 0f)
     var currentLine: String = ""

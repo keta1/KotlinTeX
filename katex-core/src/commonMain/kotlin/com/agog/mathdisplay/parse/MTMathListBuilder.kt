@@ -32,6 +32,18 @@ class MTMathListBuilder(str: String) {
     private var spacesAllowed: Boolean = false
     private var parseError: MTParseError? = null
 
+    private var singleCharCommands: Array<Char> =
+        arrayOf('{', '}', '$', '#', '%', '_', '|', ' ', ',', '>', ';', '!', '\\')
+
+    private val fractionCommands: HashMap<String, Array<String>> =
+        hashMapOf(
+            "over" to arrayOf(""),
+            "atop" to arrayOf(""),
+            "choose" to arrayOf("(", ")"),
+            "brack" to arrayOf("[", "]"),
+            "brace" to arrayOf("{", "}")
+        )
+
     private fun hasCharacters(): Boolean {
         return currentCharIndex < charLength
     }
@@ -328,9 +340,6 @@ class MTMathListBuilder(str: String) {
         return false
     }
 
-    private var singleCharCommands: Array<Char> =
-        arrayOf('{', '}', '$', '#', '%', '_', '|', ' ', ',', '>', ';', '!', '\\')
-
     private fun readCommand(): String {
         if (hasCharacters()) {
             // Check if we have a single character command.
@@ -515,17 +524,7 @@ class MTMathListBuilder(str: String) {
         }
     }
 
-    private val fractionCommands: HashMap<String, Array<String>> =
-        hashMapOf(
-            "over" to arrayOf(""),
-            "atop" to arrayOf(""),
-            "choose" to arrayOf("(", ")"),
-            "brack" to arrayOf("[", "]"),
-            "brace" to arrayOf("{", "}")
-        )
-
     private fun stopCommand(command: String, list: MTMathList, stopChar: Char): MTMathList? {
-
         when (command) {
             "right" -> {
                 if (currentInnerAtom == null) {
@@ -697,7 +696,6 @@ class MTMathListBuilder(str: String) {
         this.currentEnv = oldEnv
         return table
     }
-
 
     companion object Factory {
         fun buildFromString(str: String): MTMathList? {
@@ -950,6 +948,5 @@ class MTMathListBuilder(str: String) {
             return str.toString()
         }
     }
-
 }
 

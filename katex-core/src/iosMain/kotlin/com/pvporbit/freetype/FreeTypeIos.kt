@@ -7,7 +7,7 @@ import platform.posix.free
 
 object FreeTypeIos : IFreeType {
     override fun init(): Long {
-        return freetype.init()
+        return freetype.initLibrary()
     }
 
     override fun doneFreeType(library: Long): Boolean {

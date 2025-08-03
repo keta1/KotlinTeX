@@ -9,7 +9,7 @@
 extern "C"
 JNIEXPORT jlong JNICALL
 Java_com_pvporbit_freetype_FreeTypeAndroid_init(JNIEnv *env, jobject thiz) {
-    return init();
+    return initLibrary();
 }
 
 extern "C"
