@@ -76,7 +76,6 @@ class MTDrawFreeType(val mathFont: MTFontMathTable) {
                     // 26.6 fixed point integer from freetype
                     val offsetX = metrics.horiBearingX / 64.0f
                     val offsetY = metrics.horiBearingY / 64.0f
-                    println("(${bitmap.width}, ${bitmap.height})")
                     canvas.drawImage(bitmap, Offset(x + offsetX, y - offsetY), p)
                     if (IS_DEBUG) {
                         debugDrawStroke(
