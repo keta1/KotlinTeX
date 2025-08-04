@@ -96,6 +96,8 @@ android {
 
     defaultConfig {
         minSdk = 23
+
+        consumerProguardFile("proguard-rules.pro")
     }
 
     externalNativeBuild {

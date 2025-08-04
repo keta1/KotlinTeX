@@ -1,0 +1,3 @@
+-keep class com.pvporbit.freetype.LibraryVersion { *; }
+-keep class com.pvporbit.freetype.Kerning { *; }
+-keep class com.pvporbit.freetype.FreeTypeAndroid { *; }
