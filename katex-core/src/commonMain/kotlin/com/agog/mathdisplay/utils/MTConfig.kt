@@ -1,7 +1,7 @@
 package com.agog.mathdisplay.utils
 
 object MTConfig {
-    internal var IS_DEBUG = true
+    internal var IS_DEBUG = false
 
     /**
      * 是否开启调试模式
