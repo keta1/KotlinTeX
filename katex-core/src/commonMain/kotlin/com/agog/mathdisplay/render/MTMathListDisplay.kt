@@ -6,13 +6,12 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.withSave
 import com.agog.mathdisplay.graphics.createPlatformPaint
 import com.agog.mathdisplay.parse.MTMathAtom
 import com.agog.mathdisplay.parse.NSNotFound
 import com.agog.mathdisplay.parse.NSRange
 import com.agog.mathdisplay.render.MTLinePosition.KMTLinePositionRegular
-
-const val IS_DEBUG = false
 
 data class CGPoint(
     var x: Float = 0.0f,
@@ -80,23 +79,23 @@ open class MTDisplay(
 
 
     open fun draw(canvas: Canvas) {
-        if (IS_DEBUG) {
-            val strokePaint = createPlatformPaint()
-            strokePaint.isAntiAlias = true
-            strokePaint.color = Color.Red
-            canvas.drawLine(Offset(0.0f, -descent), Offset(width, ascent), strokePaint)
-            strokePaint.color = Color.Green
-            canvas.drawArc(
-                position.x - 2,
-                position.y - 2,
-                position.x + 2,
-                position.y + 2,
-                0f,
-                360f,
-                false,
-                strokePaint
-            )
-        }
+//        if (IS_DEBUG) {
+//            val strokePaint = createPlatformPaint()
+//            strokePaint.isAntiAlias = true
+//            strokePaint.color = Color.Red
+//            canvas.drawLine(Offset(0.0f, -descent), Offset(width, ascent), strokePaint)
+//            strokePaint.color = Color.Green
+//            canvas.drawArc(
+//                position.x - 2,
+//                position.y - 2,
+//                position.x + 2,
+//                position.y + 2,
+//                0f,
+//                360f,
+//                false,
+//                strokePaint
+//            )
+//        }
     }
 
     fun displayBounds(): CGRect {
@@ -164,16 +163,16 @@ class MTCTLineDisplay(
         font.mathTable.getAdvancesForGlyphs(glyphs, advances, num)
 
 
-        canvas.save()
-        canvas.translate(position.x, position.y)
-        canvas.scale(1.0f, -1.0f)
-        var x = 0.0f
-        for (i in 0 until num) {
-            drawer.drawGlyph(canvas, textPaint, glyphs[i], x, 0.0f)
-            x += advances[i]
+        canvas.withSave {
+            canvas.translate(position.x, position.y)
+            canvas.scale(1.0f, -1.0f)
+            var x = 0.0f
+            for (i in 0 until num) {
+                drawer.drawGlyph(canvas, textPaint, glyphs[i], x, 0.0f)
+                x += advances[i]
+            }
+            textPaint.color = Color.Red
         }
-        textPaint.color = Color.Red
-        canvas.restore()
     }
 
 
@@ -234,29 +233,29 @@ class MTMathListDisplay(
 
 
     override fun draw(canvas: Canvas) {
-        canvas.save()
-        if (IS_DEBUG) {
-            val strokePaint = createPlatformPaint()
-            strokePaint.isAntiAlias = true
-            strokePaint.color = Color.Black
-            canvas.drawArc(-4f, -4f, 4f, 4f, 4f, 180f, false, strokePaint)
-        }
+        canvas.withSave {
+            //        if (IS_DEBUG) {
+//            val strokePaint = createPlatformPaint()
+//            strokePaint.isAntiAlias = true
+//            strokePaint.color = Color.Black
+//            canvas.drawArc(-4f, -4f, 4f, 4f, 4f, 180f, false, strokePaint)
+//        }
 
-        canvas.translate(position.x, position.y)
-        if (IS_DEBUG) {
-            val strokePaint = createPlatformPaint()
-            strokePaint.isAntiAlias = true
-            strokePaint.color = Color.Blue
-            canvas.drawArc(-3f, -3f, 3f, 3f, 0f, 360f, false, strokePaint)
-        }
-        // draw each atom separately
-        val sd = this.subDisplays
-        if (sd != null) {
-            for (displayAtom in sd.toList()) {
-                displayAtom.draw(canvas)
+            canvas.translate(position.x, position.y)
+//        if (IS_DEBUG) {
+//            val strokePaint = createPlatformPaint()
+//            strokePaint.isAntiAlias = true
+//            strokePaint.color = Color.Blue
+//            canvas.drawArc(-3f, -3f, 3f, 3f, 0f, 360f, false, strokePaint)
+//        }
+            // draw each atom separately
+            val sd = this.subDisplays
+            if (sd != null) {
+                for (displayAtom in sd.toList()) {
+                    displayAtom.draw(canvas)
+                }
             }
         }
-        canvas.restore()
     }
 
 
@@ -457,30 +456,27 @@ class MTRadicalDisplay(
         degree?.draw(canvas)
 
 
-        canvas.save()
+        canvas.withSave {
+            // Make the current position the origin as all the positions of the sub atoms are relative to the origin.
+            canvas.translate(position.x + radicalShift, position.y)
 
-        // Make the current position the origin as all the positions of the sub atoms are relative to the origin.
-        canvas.translate(position.x + radicalShift, position.y)
+            // Draw the glyph.
+            radicalGlyph.draw(canvas)
 
-        // Draw the glyph.
-        radicalGlyph.draw(canvas)
+            // Draw the VBOX
+            // for the kern of, we don't need to draw anything.
+            val heightFromTop = topKern
 
-        // Draw the VBOX
-        // for the kern of, we don't need to draw anything.
-        val heightFromTop = topKern
-
-        // draw the horizontal line with the given thickness
-        val strokePaint = createPlatformPaint()
-        strokePaint.isAntiAlias = true
-        strokePaint.color = Color(textColor)
-        strokePaint.strokeWidth = lineThickness
-        strokePaint.strokeCap = StrokeCap.Round
-        val x = radicalGlyph.width
-        val y = ascent - heightFromTop - lineThickness / 2
-        canvas.drawLine(Offset(x, y), Offset(x + radicand.width, y), strokePaint)
-
-        canvas.restore()
-
+            // draw the horizontal line with the given thickness
+            val strokePaint = createPlatformPaint()
+            strokePaint.isAntiAlias = true
+            strokePaint.color = Color(textColor)
+            strokePaint.strokeWidth = lineThickness
+            strokePaint.strokeCap = StrokeCap.Round
+            val x = radicalGlyph.width
+            val y = ascent - heightFromTop - lineThickness / 2
+            canvas.drawLine(Offset(x, y), Offset(x + radicand.width, y), strokePaint)
+        }
     }
 }
 
@@ -501,11 +497,11 @@ class MTGlyphDisplay(
         textPaint.color = Color(textColor)
         val drawer = MTDrawFreeType(myFont.mathTable)
 
-        canvas.save()
-        canvas.translate(position.x, position.y - this.shiftDown)
-        canvas.scale(1.0f, -1.0f)
-        drawer.drawGlyph(canvas, textPaint, glyph.gid, 0.0f, 0.0f)
-        canvas.restore()
+        canvas.withSave {
+            canvas.translate(position.x, position.y - this.shiftDown)
+            canvas.scale(1.0f, -1.0f)
+            drawer.drawGlyph(canvas, textPaint, glyph.gid, 0.0f, 0.0f)
+        }
     }
 
     override var ascent: Float
@@ -538,31 +534,29 @@ class MTGlyphConstructionDisplay(
 
     override fun draw(canvas: Canvas) {
         val drawer = MTDrawFreeType(myFont.mathTable)
-        canvas.save()
+        canvas.withSave {
+            // Make the current position the origin as all the positions of the sub atoms are relative to the origin.
+            canvas.translate(position.x, position.y - shiftDown)
 
-        // Make the current position the origin as all the positions of the sub atoms are relative to the origin.
-        canvas.translate(position.x, position.y - shiftDown)
+            // Draw the glyphs.
+            // positions these are x&y (0,offsets[i])
+            val textPaint = createPlatformPaint()
+            textPaint.isAntiAlias = true
+            textPaint.color = Color(textColor)
+            //textPaint.setTextSize(myFont.fontSize)
+            //textPaint.setTypeface(myFont.typeface)
 
-        // Draw the glyphs.
-        // positions these are x&y (0,offsets[i])
-        val textPaint = createPlatformPaint()
-        textPaint.isAntiAlias = true
-        textPaint.color = Color(textColor)
-        //textPaint.setTextSize(myFont.fontSize)
-        //textPaint.setTypeface(myFont.typeface)
+            for (i in 0 until glyphs.count()) {
+                //val textStr = myFont.getGlyphString(glyphs[i])
+                canvas.save()
+                canvas.translate(0f, offsets[i])
+                canvas.scale(1.0f, -1.0f)
+                drawer.drawGlyph(canvas, textPaint, glyphs[i], 0.0f, 0.0f)
 
-        for (i in 0 until glyphs.count()) {
-            //val textStr = myFont.getGlyphString(glyphs[i])
-            canvas.save()
-            canvas.translate(0f, offsets[i])
-            canvas.scale(1.0f, -1.0f)
-            drawer.drawGlyph(canvas, textPaint, glyphs[i], 0.0f, 0.0f)
-
-            //canvas.drawText(textStr, 0.0f, 0.0f, textPaint)
-            canvas.restore()
+                //canvas.drawText(textStr, 0.0f, 0.0f, textPaint)
+                canvas.restore()
+            }
         }
-
-        canvas.restore()
     }
 
     override var ascent: Float
@@ -764,12 +758,10 @@ class MTAccentDisplay(
     override fun draw(canvas: Canvas) {
         this.accentDisplay.draw(canvas)
 
-        canvas.save()
-
-        canvas.translate(position.x, position.y)
-        this.accent.draw(canvas)
-        canvas.restore()
-
+        canvas.withSave {
+            canvas.translate(position.x, position.y)
+            this.accent.draw(canvas)
+        }
     }
 }
 

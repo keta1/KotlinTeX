@@ -1,11 +1,15 @@
 package com.agog.mathdisplay.render
 
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Canvas
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.PaintingStyle
 import com.agog.mathdisplay.graphics.createImageBitmapFromFreetypeBitmap
 import com.agog.mathdisplay.parse.MathDisplayException
 import com.agog.mathdisplay.utils.BitmapCache
+import com.agog.mathdisplay.utils.MTConfig.IS_DEBUG
 import com.pvporbit.freetype.FreeTypeConstants
 
 
@@ -25,13 +29,23 @@ class MTDrawFreeType(val mathFont: MTFontMathTable) {
                 val estimatedHeight = (metrics.height / 64.0f).toInt()
 
                 // 构建包含估算尺寸的缓存键
-                val cacheKey = "$gid-${mathFont.font.name}-${mathFont.font.fontSize}-${estimatedWidth}x${estimatedHeight}"
+                val cacheKey =
+                    "$gid-${mathFont.font.name}-${mathFont.font.fontSize}-${estimatedWidth}x${estimatedHeight}"
 
                 val cachedBitmap = BitmapCache[cacheKey]
                 if (cachedBitmap != null) {
                     val offsetX = metrics.horiBearingX / 64.0f
                     val offsetY = metrics.horiBearingY / 64.0f
                     canvas.drawImage(cachedBitmap, Offset(x + offsetX, y - offsetY), p)
+                    if (IS_DEBUG) {
+                        debugDrawStroke(
+                            canvas,
+                            x + offsetX,
+                            y - offsetY,
+                            estimatedWidth,
+                            estimatedHeight
+                        )
+                    }
                     return
                 }
             }
@@ -59,12 +73,37 @@ class MTDrawFreeType(val mathFont: MTFontMathTable) {
                         BitmapCache[cacheKey] = it
                     }
                     val metrics = glyphSlot.metrics!!
-                    val offsetX =
-                        metrics.horiBearingX / 64.0f  // 26.6 fixed point integer from freetype
+                    // 26.6 fixed point integer from freetype
+                    val offsetX = metrics.horiBearingX / 64.0f
                     val offsetY = metrics.horiBearingY / 64.0f
+                    println("(${bitmap.width}, ${bitmap.height})")
                     canvas.drawImage(bitmap, Offset(x + offsetX, y - offsetY), p)
+                    if (IS_DEBUG) {
+                        debugDrawStroke(
+                            canvas,
+                            x + offsetX,
+                            y - offsetY,
+                            plainBitmap.width,
+                            plainBitmap.rows
+                        )
+                    }
                 }
             }
         }
+    }
+
+    private fun debugDrawStroke(canvas: Canvas, x: Float, y: Float, width: Int, height: Int) {
+        canvas.drawRect(
+            rect = Rect(
+                left = x,
+                top = y,
+                right = x + width,
+                bottom = y + height
+            ),
+            paint = Paint().apply {
+                style = PaintingStyle.Stroke
+                color = Color.Red
+            }
+        )
     }
 }
