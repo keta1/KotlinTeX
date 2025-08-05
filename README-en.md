@@ -172,12 +172,6 @@ cd external/freetype
 ./build-ios-cmake.sh
 ```
 
-## Version History
-
-- **0.1.0** - Initial release with basic LaTeX mathematical expression rendering support, based on
-  Freetype 2.13.3.
-- **0.2.0** - Fixed rendering issues on iOS, optimized performance, and resolved memory leaks
-
 ## Acknowledgments
 
 This project is developed based on the [AndroidMath](https://github.com/gregcockroft/AndroidMath)

@@ -161,11 +161,6 @@ cd external/freetype
 ./build-ios-cmake.sh
 ```
 
-## 版本历史
-
-- **0.1.0** - 初始版本，支持基本的 LaTeX 数学表达式渲染，基于 Freetype 2.13.3
-- **0.2.0** - 修复了在 iOS 上的渲染问题，优化了性能，解决内存泄漏问题
-
 ## 致谢
 
 本项目基于 [AndroidMath](https://github.com/gregcockroft/AndroidMath) 项目开发，感谢原作者的贡献。
