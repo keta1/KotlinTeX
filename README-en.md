@@ -43,7 +43,7 @@ Add the following to your `settings.gradle.kts`:
 ```kotlin
 pluginManagement {
     repositories {
-        mavenCentral() // 或者 maven { url = uri("https://jitpack.io") }
+        mavenCentral() // or maven { url = uri("https://jitpack.io") }
     }
 }
 ```
@@ -54,7 +54,7 @@ Then, add the dependency in your `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("io.github.darriousliu:katex:0.1.0")
+    implementation("io.github.darriousliu:katex:0.2.1")
 }
 ```
 
@@ -64,7 +64,7 @@ dependencies {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.darriousliu:katex:0.1.0")
+            implementation("io.github.darriousliu:katex:0.2.1")
         }
     }
 }
@@ -83,19 +83,17 @@ Multiplatform.
 @Composable
 fun LatexExample() {
     MTMathView(
-        latex = "\\frac{a}{b}",
-        modifier = Modifier.fillMaxWidth(),
-        fontSize = KDefaultFontSize.sp,
-        textColor = Color.Black,
-        font = null,
-        mode = MTMathViewMode.KMTMathViewModeDisplay,
-        textAlignment = MTTextAlignment.KMTTextAlignmentLeft,
-        displayErrorInline = true,
-        errorFontSize = 20.sp,
-        minHeight = fontSize * 1.5f,
+      latex = "\\frac{a}{b}",
+      modifier = Modifier.fillMaxWidth(),
+      fontSize = 20.sp,
+      textColor = Color.Black,
+      font = null,
+      mode = MTMathViewMode.KMTMathViewModeDisplay,
+      textAlignment = MTTextAlignment.KMTTextAlignmentLeft,
+      displayErrorInline = true,
+      errorFontSize = 20.sp,
     )
 }
-
 ```
 
 2. Parse LaTeX in background thread such as in ViewModel
@@ -147,12 +145,13 @@ fun LatexList(
         items(state) { mathList ->
             MTMathView(
                 mathList = mathList,
-                fontSize = KDefaultFontSize.sp,
+                fontSize = 20.sp,
                 textColor = Color.Black,
                 font = null,
                 mode = MTMathViewMode.KMTMathViewModeDisplay,
                 textAlignment = MTTextAlignment.KMTTextAlignmentLeft,
-                minHeight = KDefaultFontSize.sp * 1.5f
+                displayErrorInline = false,
+                errorFontSize = 20.sp,
             )
         }
     }

@@ -50,7 +50,7 @@ pluginManagement {
 
 ```kotlin
 dependencies {
-    implementation("io.github.darriousliu:katex:0.1.0")
+    implementation("io.github.darriousliu:katex:0.2.1")
 }
 ```
 
@@ -60,7 +60,7 @@ dependencies {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.darriousliu:katex:0.1.0")
+            implementation("io.github.darriousliu:katex:0.2.1")
         }
     }
 }
@@ -75,18 +75,20 @@ kotlin {
 1. 直接使用Latex字符串
 
 ```kotlin
-MTMathView(
-    latex = "\\frac{a}{b}",
-    modifier = Modifier.fillMaxWidth(),
-    fontSize = KDefaultFontSize.sp,
-    textColor = Color.Black,
-    font = null,
-    mode = MTMathViewMode.KMTMathViewModeDisplay,
-    textAlignment = MTTextAlignment.KMTTextAlignmentLeft,
-    displayErrorInline = true,
-    errorFontSize = 20.sp,
-    minHeight = fontSize * 1.5f,
-)
+@Composable
+fun LatexExample() {
+    MTMathView(
+        latex = "\\frac{a}{b}",
+        modifier = Modifier.fillMaxWidth(),
+        fontSize = 20.sp,
+        textColor = Color.Black,
+        font = null,
+        mode = MTMathViewMode.KMTMathViewModeDisplay,
+        textAlignment = MTTextAlignment.KMTTextAlignmentLeft,
+        displayErrorInline = true,
+        errorFontSize = 20.sp,
+    )
+}
 ```
 
 2. 在后台线程如 ViewModel 中解析Latex得到
@@ -138,12 +140,13 @@ fun LatexList(
         items(state) { mathList ->
             MTMathView(
                 mathList = mathList,
-                fontSize = KDefaultFontSize.sp,
+                fontSize = 20.sp,
                 textColor = Color.Black,
                 font = null,
                 mode = MTMathViewMode.KMTMathViewModeDisplay,
                 textAlignment = MTTextAlignment.KMTTextAlignmentLeft,
-                minHeight = KDefaultFontSize.sp * 1.5f
+                displayErrorInline = false,
+                errorFontSize = 20.sp,
             )
         }
     }
