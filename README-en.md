@@ -10,7 +10,7 @@ supporting Android and iOS platforms.
 
 ## Display
 
-https://github.com/user-attachments/assets/ee302c81-8f74-440e-97e0-224ff32b4516
+https://github.com/user-attachments/assets/1f8a57a2-8610-44c8-b33d-4a1b4dbf6a34
 
 ## About the Project
 
