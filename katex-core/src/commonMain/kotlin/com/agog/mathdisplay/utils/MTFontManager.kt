@@ -3,7 +3,7 @@ package com.agog.mathdisplay.utils
 import com.agog.mathdisplay.render.MTFont
 
 
-const val KDefaultFontSize = 20f
+internal const val KDefaultFontSize = 20f
 
 object MTFontManager {
     private val nameToFontMap = hashMapOf<String, MTFont>()

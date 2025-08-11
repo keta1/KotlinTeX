@@ -71,68 +71,58 @@ fun MTMathView(
     val density = LocalDensity.current
     val textMeasurer = rememberTextMeasurer()
     // 状态管理
-    val state =
-        remember(mathList, parseError, fontSize, font, mode, displayErrorInline) {
-            with(density) {
-                // 1. 更新字体
-                val newFont =
-                    (font ?: MTFontManager.defaultFont()).copyFontWithSize(fontSize.toPx())
+    val state = remember(mathList, parseError, fontSize, font, mode, displayErrorInline) {
+        with(density) {
+            // 1. 更新字体
+            val newFont = (font ?: MTFontManager.defaultFont()).copyFontWithSize(fontSize.toPx())
 
-                // 2. 更新显示列表
-                val newDisplayList = if (mathList != null) {
-                    val style = when (mode) {
-                        MTMathViewMode.KMTMathViewModeDisplay -> MTLineStyle.KMTLineStyleDisplay
-                        MTMathViewMode.KMTMathViewModeText -> MTLineStyle.KMTLineStyleText
-                    }
-                    MTTypesetter.createLineForMathList(mathList, newFont, style)
-                } else {
-                    null
+            // 2. 更新显示列表
+            val newDisplayList = if (mathList != null) {
+                val style = when (mode) {
+                    MTMathViewMode.KMTMathViewModeDisplay -> MTLineStyle.KMTLineStyleDisplay
+                    MTMathViewMode.KMTMathViewModeText -> MTLineStyle.KMTLineStyleText
+                }
+                MTTypesetter.createLineForMathList(mathList, newFont, style)
+            } else {
+                null
+            }
+
+            // 3. 计算尺寸
+            val (width, height) = when {
+                newDisplayList != null -> {
+                    val width = (newDisplayList.width + 1).toDp()
+                    val height = (newDisplayList.ascent + newDisplayList.descent + 1).toDp()
+                    Pair(width, height)
                 }
 
-                // 3. 计算尺寸
-                val (width, height) = when {
-                    newDisplayList != null -> {
-                        val width = (newDisplayList.width + 1).toDp()
-                        val height = (newDisplayList.ascent + newDisplayList.descent + 1).toDp()
-                        Pair(width, height)
-                    }
-
-                    parseError != null && parseError.errorCode != MTParseErrors.ErrorNone && displayErrorInline -> {
-                        // 计算错误文本尺寸
-                        val errorTextSizeDp = errorFontSize.toDp()
-                        val estimatedWidth = parseError.errorDesc.length * errorTextSizeDp * 0.6f
-                        Pair(estimatedWidth, errorTextSizeDp * 1.2f)
-                    }
-
-                    else -> Pair(0.dp, 0.dp)
+                parseError != null && parseError.errorCode != MTParseErrors.ErrorNone && displayErrorInline -> {
+                    // 计算错误文本尺寸
+                    val errorTextSizeDp = errorFontSize.toDp()
+                    val estimatedWidth = parseError.errorDesc.length * errorTextSizeDp * 0.6f
+                    Pair(estimatedWidth, errorTextSizeDp * 1.2f)
                 }
 
-                // 4. 一次性更新所有状态，避免中间状态
-                MTMathViewState(
-                    displayList = newDisplayList,
-                    calculatedWidth = width,
-                    calculatedHeight = height,
-                    parseError = parseError
-                )
-            }
-        }
-
-    Canvas(
-        modifier = modifier.size(state.calculatedWidth, state.calculatedHeight)
-    ) {
-        val parseError = state.parseError
-        val displayList = state.displayList
-
-        when {
-            parseError != null && parseError.errorCode != MTParseErrors.ErrorNone && displayErrorInline -> {
-                drawError(parseError.errorDesc, errorFontSize, Color.Red, textMeasurer)
+                else -> Pair(0.dp, 0.dp)
             }
 
-            displayList != null -> {
-                drawMathFormula(displayList, textColor, textAlignment)
-            }
+            // 4. 一次性更新所有状态，避免中间状态
+            MTMathViewState(
+                displayList = newDisplayList,
+                calculatedWidth = width,
+                calculatedHeight = height,
+                parseError = parseError
+            )
         }
     }
+
+    MathCanvas(
+        parseError = state.parseError,
+        displayList = state.displayList,
+        modifier = modifier.size(state.calculatedWidth, state.calculatedHeight),
+        textAlignment = textAlignment,
+        errorFontSize = errorFontSize,
+        textMeasurer = textMeasurer
+    )
 }
 
 /**
@@ -211,26 +201,47 @@ fun MTMathView(
     val height = with(density) { mathItem.height.toDp() }
     val textMeasurer = rememberTextMeasurer()
 
+    MathCanvas(
+        parseError = mathItem.parseError,
+        displayList = mathItem.displayList,
+        modifier = modifier.size(width, height),
+        textAlignment = textAlignment,
+        errorFontSize = errorFontSize,
+        textMeasurer = textMeasurer
+    )
+}
+
+@Composable
+private fun MathCanvas(
+    parseError: MTParseError?,
+    displayList: MTMathListDisplay?,
+    modifier: Modifier = Modifier,
+    textAlignment: MTTextAlignment = MTTextAlignment.KMTTextAlignmentLeft,
+    errorFontSize: TextUnit = DefaultErrorFontSize,
+    textMeasurer: TextMeasurer = rememberTextMeasurer(),
+) {
     Canvas(
-        modifier = modifier.size(width, height)
+        modifier = modifier
     ) {
-        if (mathItem.displayList == null ||
-            mathItem.parseError != null && mathItem.parseError.errorCode != MTParseErrors.ErrorNone
-        ) {
-            // 绘制错误信息
-            drawError(
-                errorMessage = mathItem.parseError?.errorDesc.orEmpty(),
-                errorFontSize = errorFontSize,
-                errorColor = Color.Red,
-                textMeasurer = textMeasurer
-            )
-        } else {
-            // 绘制数学公式
-            drawMathFormula(
-                displayList = mathItem.displayList,
-                textColor = Color(mathItem.displayList.textColor),
-                textAlignment = textAlignment
-            )
+        when {
+            parseError != null && parseError.errorCode != MTParseErrors.ErrorNone -> {
+                // 绘制错误信息
+                drawError(
+                    errorMessage = parseError.errorDesc,
+                    errorFontSize = errorFontSize,
+                    errorColor = Color.Red,
+                    textMeasurer = textMeasurer
+                )
+            }
+
+            displayList != null -> {
+                // 绘制数学公式
+                drawMathFormula(
+                    displayList = displayList,
+                    textColor = Color(displayList.textColor),
+                    textAlignment = textAlignment
+                )
+            }
         }
     }
 }
