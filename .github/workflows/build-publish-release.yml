@@ -109,9 +109,13 @@ jobs:
           prerelease: false
 
       - name: Build (first attempt)
-        id: build
+        id: commonize
         continue-on-error: true
-        run: ./gradlew build
+        run: ./gradlew katex-core:commonizeCInterop
+
+      - name: Build (second attempt)
+        if: steps.commonize.outcome == 'failure'
+        run: ./gradlew katex-core:commonizeCInterop --rerun-tasks
 
       - name: Publish to GitHub Packages And Maven Central
         env:
