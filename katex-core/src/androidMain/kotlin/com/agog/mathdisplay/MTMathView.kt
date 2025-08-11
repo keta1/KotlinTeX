@@ -1,21 +1,22 @@
 package com.agog.mathdisplay
 
-import android.view.View
-import com.agog.mathdisplay.render.MTFont
-import com.agog.mathdisplay.render.MTMathListDisplay
 import android.content.Context
-import android.util.AttributeSet
-import com.agog.mathdisplay.parse.*
-import com.agog.mathdisplay.render.MTTypesetter
-import com.agog.mathdisplay.MTMathView.MTTextAlignment.*
-import com.agog.mathdisplay.MTMathView.MTMathViewMode.*
 import android.content.res.Resources
 import android.graphics.*
-import androidx.compose.ui.graphics.Canvas as ComposeCanvas
+import android.util.AttributeSet
+import android.view.View
 import androidx.core.graphics.withTranslation
+import com.agog.mathdisplay.MTMathView.MTMathViewMode.KMTMathViewModeDisplay
+import com.agog.mathdisplay.MTMathView.MTMathViewMode.KMTMathViewModeText
+import com.agog.mathdisplay.MTMathView.MTTextAlignment.*
+import com.agog.mathdisplay.parse.*
+import com.agog.mathdisplay.render.MTFont
+import com.agog.mathdisplay.render.MTMathListDisplay
+import com.agog.mathdisplay.render.MTTypesetter
 import com.agog.mathdisplay.utils.KDefaultFontSize
 import com.agog.mathdisplay.utils.MTFontManager
 import kotlin.math.roundToInt
+import androidx.compose.ui.graphics.Canvas as ComposeCanvas
 
 
 /** View subclass for rendering LaTeX Math.
@@ -32,9 +33,9 @@ When created it uses `MTFontManager.defaultFont` as its font. This can be change
 the `font` parameter.
  */
 class MTMathView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyle: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
 ) : View(context, attrs, defStyle) {
 
     private var displayList: MTMathListDisplay? = null
@@ -98,6 +99,7 @@ class MTMathView @JvmOverloads constructor(
     enum class MTMathViewMode {
         /// Display mode. Equivalent to $$ in TeX
         KMTMathViewModeDisplay,
+
         /// Text mode. Equivalent to $ in TeX.
         KMTMathViewModeText
     }
@@ -109,8 +111,10 @@ class MTMathView @JvmOverloads constructor(
     enum class MTTextAlignment {
         /// Align left.
         KMTTextAlignmentLeft,
+
         /// Align center.
         KMTTextAlignmentCenter,
+
         /// Align right.
         KMTTextAlignmentRight
     }
