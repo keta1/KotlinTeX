@@ -27,7 +27,7 @@ Multiplatform 为 Android 和 iOS 平台提供高质量的 LaTeX 数学表达式
 
 ## 平台支持
 
-- ✅ Android (API 23+)
+- ✅ Android (API 23+)，已适配16KB Page Size
 - ✅ iOS (iOS 13+)
 
 ## 依赖

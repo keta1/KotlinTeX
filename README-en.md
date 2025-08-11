@@ -31,7 +31,7 @@ Android and iOS platforms through Compose Multiplatform.
 
 ## Platform Support
 
-- ✅ Android (API 23+)
+- ✅ Android (API 23+), already adapted for 16KB Page Size
 - ✅ iOS (iOS 13+)
 
 ## Dependencies
