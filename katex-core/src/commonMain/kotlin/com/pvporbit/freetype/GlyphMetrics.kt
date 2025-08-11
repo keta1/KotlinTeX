@@ -1,6 +1,6 @@
 package com.pvporbit.freetype
 
-class GlyphMetrics(pointer: Long) : Utils.Pointer(pointer) {
+class GlyphMetrics(pointer: Long) : Pointer(pointer) {
     val width: Long
         get() = FreeType.glyphMetricsGetWidth(pointer)
 
