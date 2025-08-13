@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalUnsignedTypes::class)
-
 package com.pvporbit.freetype
 
 
@@ -130,4 +128,4 @@ interface IFreeType {
     }
 }
 
-expect val FreeType: IFreeType
+internal expect val FreeType: IFreeType

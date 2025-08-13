@@ -1,3 +1,3 @@
 package com.pvporbit.freetype
 
-actual val FreeType: IFreeType = FreeTypeAndroid
+internal actual val FreeType: IFreeType = FreeTypeAndroid
