@@ -17,7 +17,7 @@ internal actual fun createImageBitmapFromFreetypeBitmap(
     bitmap.allocPixels(imageInfo)
 
     // 将 ByteBuffer 数据复制到 Skia Bitmap
-    val pixels = buffer.toByteArray(buffer.remaining())
+    val pixels = buffer.toByteArray()
     bitmap.installPixels(pixels)
 
     return bitmap.asComposeImageBitmap()

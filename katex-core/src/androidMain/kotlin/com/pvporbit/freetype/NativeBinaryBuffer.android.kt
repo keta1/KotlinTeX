@@ -36,12 +36,9 @@ actual class NativeBinaryBuffer constructor(
         byteBuffer.position(0)
     }
 
-    actual fun toByteArray(length: Int): ByteArray {
-        require(length <= size)
-        val arr = ByteArray(length)
-        byteBuffer.position(0)
-        byteBuffer.get(arr, 0, length)
-        byteBuffer.position(0)  // 复用
+    actual fun toByteArray(): ByteArray {
+        val arr = ByteArray(size)
+        byteBuffer.get(arr, 0, size)
         return arr
     }
 
