@@ -141,7 +141,7 @@ class MTFontMathTable(
 
     fun getAdvancesForGlyphs(glyphs: List<Int>, advances: Array<Float>, count: Int) {
         for (i in 0 until count) {
-            if (!freeFace.loadGlyph(glyphs[i], FT_LOAD_NO_SCALE)) {
+            if (freeFace.loadGlyph(glyphs[i], FT_LOAD_NO_SCALE)) {
                 val glyphSlot = freeFace.glyphSlot
                 val a = glyphSlot?.advance
                 if (a != null) {
@@ -169,7 +169,7 @@ class MTFontMathTable(
         val enclosing = BoundingBox()
 
         for (i in 0 until count) {
-            if (!freeFace.loadGlyph(glyphs[i], FT_LOAD_NO_SCALE)) {
+            if (freeFace.loadGlyph(glyphs[i], FT_LOAD_NO_SCALE)) {
                 val nb = BoundingBox()
                 val glyphSlot = freeFace.glyphSlot
                 val m = glyphSlot?.metrics!!
