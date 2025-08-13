@@ -1,3 +1,4 @@
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -6,6 +7,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.composeHotReload)
 }
 
 kotlin {
@@ -25,6 +27,7 @@ kotlin {
             isStatic = true
         }
     }
+    jvm()
     
     sourceSets {
         
@@ -91,6 +94,18 @@ dependencies {
 tasks.configureEach {
     if (name.startsWith("ksp") && name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
+
+compose.desktop {
+    application {
+        mainClass = "io.github.darriousliu.katex.MainKt"
+
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "io.github.darriousliu.katex"
+            packageVersion = "1.0.0"
+        }
     }
 }
 

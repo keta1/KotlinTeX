@@ -57,6 +57,8 @@ kotlin {
                 implementation(compose.ui)
                 implementation(compose.material3)
 
+                implementation(libs.androidx.collection)
+
                 implementation(libs.okio)
 
                 implementation(project.dependencies.platform(libs.kotlinx.coroutines.bom))
@@ -81,6 +83,35 @@ kotlin {
                 // on common by default and will correctly pull the iOS artifacts of any
                 // KMP dependencies declared in commonMain.
             }
+        }
+
+        jvmMain.dependencies {
+            implementation(compose.desktop.currentOs)
+            implementation(libs.kotlinx.coroutinesSwing)
+
+            // 检测平台
+            val lwjglNatives = when (System.getProperty("os.name")) {
+                "Mac OS X" -> when (System.getProperty("os.arch")) {
+                    "aarch64" -> "natives-macos-arm64"
+                    else -> "natives-macos-x64"
+                }
+
+                "Linux" -> when (System.getProperty("os.arch")) {
+                    "aarch64" -> "natives-linux-arm64"
+                    else -> "natives-linux-x64"
+                }
+                else -> when (System.getProperty("os.arch").contains("64")) {
+                    true -> "natives-windows-x64"
+                    false -> "natives-windows-x86"
+                }
+            }
+            // LWJGL 核心依赖
+            implementation(libs.lwjgl)
+            implementation(libs.lwjgl.freetype)
+
+            // 平台特定的本地库
+            runtimeOnly("org.lwjgl:lwjgl:${libs.versions.lwjgl.get()}:$lwjglNatives")
+            runtimeOnly("org.lwjgl:lwjgl-freetype:${libs.versions.lwjgl.get()}:$lwjglNatives")
         }
     }
 }
