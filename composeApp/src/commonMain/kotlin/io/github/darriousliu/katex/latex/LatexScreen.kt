@@ -168,6 +168,7 @@ fun LatexScreen(
                     ) { _, item ->
                         MTMathView(
                             mathItem = item,
+                            textColor = color,
                         )
                     }
                 }

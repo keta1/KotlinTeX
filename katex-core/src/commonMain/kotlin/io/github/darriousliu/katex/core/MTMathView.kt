@@ -119,6 +119,7 @@ fun MTMathView(
         parseError = state.parseError,
         displayList = state.displayList,
         modifier = modifier.size(state.calculatedWidth, state.calculatedHeight),
+        textColor = textColor,
         textAlignment = textAlignment,
         errorFontSize = errorFontSize,
         textMeasurer = textMeasurer
@@ -193,6 +194,7 @@ fun MTMathView(
 fun MTMathView(
     mathItem: MathItem,
     modifier: Modifier = Modifier,
+    textColor: Color = Color.Black,
     textAlignment: MTTextAlignment = MTTextAlignment.KMTTextAlignmentLeft,
     errorFontSize: TextUnit = DefaultErrorFontSize,
 ) {
@@ -205,6 +207,7 @@ fun MTMathView(
         parseError = mathItem.parseError,
         displayList = mathItem.displayList,
         modifier = modifier.size(width, height),
+        textColor = textColor,
         textAlignment = textAlignment,
         errorFontSize = errorFontSize,
         textMeasurer = textMeasurer
@@ -216,6 +219,7 @@ private fun MathCanvas(
     parseError: MTParseError?,
     displayList: MTMathListDisplay?,
     modifier: Modifier = Modifier,
+    textColor: Color = Color.Black,
     textAlignment: MTTextAlignment = MTTextAlignment.KMTTextAlignmentLeft,
     errorFontSize: TextUnit = DefaultErrorFontSize,
     textMeasurer: TextMeasurer = rememberTextMeasurer(),
@@ -238,7 +242,7 @@ private fun MathCanvas(
                 // 绘制数学公式
                 drawMathFormula(
                     displayList = displayList,
-                    textColor = Color(displayList.textColor),
+                    textColor = textColor,
                     textAlignment = textAlignment
                 )
             }
