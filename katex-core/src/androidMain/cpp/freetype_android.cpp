@@ -394,7 +394,7 @@ Java_com_pvporbit_freetype_FreeTypeAndroid_sizeMetricsGetXScale(JNIEnv *env, job
 }
 
 extern "C"
-JNIEXPORT jlong JNICALL
+JNIEXPORT jint JNICALL
 Java_com_pvporbit_freetype_FreeTypeAndroid_sizeMetricsGetYPPEM(JNIEnv *env, jobject thiz,
                                                                jlong size_metrics) {
     return sizeMetricsGetYPPEM(size_metrics);

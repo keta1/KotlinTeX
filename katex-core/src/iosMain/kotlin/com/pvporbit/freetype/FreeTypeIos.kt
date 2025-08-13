@@ -296,7 +296,7 @@ object FreeTypeIos : IFreeType {
         return freetype.sizeMetricsGetXScale(sizeMetrics)
     }
 
-    override fun sizeMetricsGetYPPEM(sizeMetrics: Long): Long {
+    override fun sizeMetricsGetYPPEM(sizeMetrics: Long): Int {
         return freetype.sizeMetricsGetYPPEM(sizeMetrics)
     }
 

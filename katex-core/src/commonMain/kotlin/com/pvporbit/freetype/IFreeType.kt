@@ -81,7 +81,7 @@ interface IFreeType {
     fun sizeMetricsGetMaxAdvance(sizeMetrics: Long): Long
     fun sizeMetricsGetXPPEM(sizeMetrics: Long): Int
     fun sizeMetricsGetXScale(sizeMetrics: Long): Long
-    fun sizeMetricsGetYPPEM(sizeMetrics: Long): Long
+    fun sizeMetricsGetYPPEM(sizeMetrics: Long): Int
     fun sizeMetricsGetYScale(sizeMetrics: Long): Long
 
     // ---- GlyphSlot

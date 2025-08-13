@@ -16,7 +16,7 @@ class SizeMetrics constructor(pointer: Long) : Pointer(pointer) {
     val xppem: Int
         get() = FreeType.sizeMetricsGetXPPEM(pointer)
 
-    val yppem: Long
+    val yppem: Int
         get() = FreeType.sizeMetricsGetYPPEM(pointer)
 
     val xScale: Long

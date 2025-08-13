@@ -188,7 +188,7 @@ object FreeTypeAndroid : IFreeType {
 
     external override fun sizeMetricsGetXScale(sizeMetrics: Long): Long
 
-    external override fun sizeMetricsGetYPPEM(sizeMetrics: Long): Long
+    external override fun sizeMetricsGetYPPEM(sizeMetrics: Long): Int
 
     external override fun sizeMetricsGetYScale(sizeMetrics: Long): Long
 
