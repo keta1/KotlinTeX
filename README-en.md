@@ -220,10 +220,8 @@ kotlin {
             // Determine native library dependencies based on target and arch parameters
             val nativeTarget = "natives-$targetOs-$targetArch"
 
-            if (nativeTarget != null) {
-                runtimeOnly("org.lwjgl:lwjgl:$lwjglVersion:$nativeTarget")
-                runtimeOnly("org.lwjgl:lwjgl-freetype:$lwjglVersion:$nativeTarget")
-            }
+            runtimeOnly("org.lwjgl:lwjgl:$lwjglVersion:$nativeTarget")
+            runtimeOnly("org.lwjgl:lwjgl-freetype:$lwjglVersion:$nativeTarget")
         }
     }
 }

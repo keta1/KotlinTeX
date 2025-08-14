@@ -212,10 +212,8 @@ kotlin {
             // 根据传入的target和arch参数确定本地库依赖
             val nativeTarget = "natives-$targetOs-$targetArch"
        
-            if (nativeTarget != null) {
-                runtimeOnly("org.lwjgl:lwjgl:$lwjglVersion:$nativeTarget")
-                runtimeOnly("org.lwjgl:lwjgl-freetype:$lwjglVersion:$nativeTarget")
-            }
+            runtimeOnly("org.lwjgl:lwjgl:$lwjglVersion:$nativeTarget")
+            runtimeOnly("org.lwjgl:lwjgl-freetype:$lwjglVersion:$nativeTarget")
         }
     }
 }
