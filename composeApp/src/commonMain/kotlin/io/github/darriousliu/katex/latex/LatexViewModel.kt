@@ -224,6 +224,24 @@ a = \begin{cases} \nabla \cdot \mathbf{E} = \frac{\rho}{\epsilon_0} \end{cases}
 \nabla \cdot \mathbf{E} = \frac{\rho}{\epsilon_0}
 
 \diamond = \frac{1}{2} \sqrt{3} a^2
+
+# surd
+\surd{2} + \surd{3} = \surd{5}
+
+# cbrt
+\cbrt{8} + \cbrt{27} = \cbrt{35}
+
+# angle
+\angle ABC = 90^\degree 90^\circ
+
+# square
+\square{2} + \square{3} = \square{5}
+\blacksquare{2} + \blacksquare{3} = \blacksquare{5}
+
+# box
+\Box{2} + \Box{3} = \Box{5}
+\boxed{2} + \boxed{3} = \boxed{5}
+
 """.lines()
     .filter { !it.startsWith("#") && it.isNotBlank() }
     .distinct()
