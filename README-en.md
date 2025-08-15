@@ -57,7 +57,7 @@ Then, add the dependency in your `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("io.github.darriousliu:katex:0.2.1")
+    implementation("io.github.darriousliu:katex:0.3.0")
 }
 ```
 
@@ -67,7 +67,7 @@ dependencies {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.darriousliu:katex:0.2.1")
+            implementation("io.github.darriousliu:katex:0.3.0")
         }
     }
 }
