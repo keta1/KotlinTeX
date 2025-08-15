@@ -19,7 +19,7 @@ class MTDrawFreeType(val mathFont: MTFontMathTable) {
         val face = mathFont.checkFontSize()
 
         // 先用 NO_RENDER 模式获取字形信息（不加载实际 bitmap）
-        if (gid != 0 && !face.loadGlyph(gid, FreeTypeConstants.FT_LOAD_NO_BITMAP)) {
+        if (gid != 0 && face.loadGlyph(gid, FreeTypeConstants.FT_LOAD_NO_BITMAP)) {
             val glyphSlot = face.glyphSlot
             val metrics = glyphSlot?.metrics
 
@@ -53,7 +53,7 @@ class MTDrawFreeType(val mathFont: MTFontMathTable) {
 
 
         /* load glyph image into the slot and render (erase previous one) */
-        if (gid != 0 && !face.loadGlyph(gid, FreeTypeConstants.FT_LOAD_RENDER)) {
+        if (gid != 0 && face.loadGlyph(gid, FreeTypeConstants.FT_LOAD_RENDER)) {
             val glyphSlot = face.glyphSlot
             val plainBitmap = glyphSlot?.bitmap
             if (plainBitmap != null) {

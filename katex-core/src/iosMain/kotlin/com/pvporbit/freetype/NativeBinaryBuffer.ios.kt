@@ -66,12 +66,11 @@ actual class NativeBinaryBuffer constructor(actual val size: Int, initPtr: CPoin
         }
     }
 
-    actual fun toByteArray(length: Int): ByteArray {
-        require(length <= size)
+    actual fun toByteArray(): ByteArray {
         val outPtr = ptr!!
-        return ByteArray(length).apply {
+        return ByteArray(size).apply {
             usePinned { pinned ->
-                memcpy(pinned.addressOf(0), outPtr, length.convert())
+                memcpy(pinned.addressOf(0), outPtr, size.convert())
             }
         }
     }

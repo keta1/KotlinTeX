@@ -2,6 +2,8 @@
 
 package com.pvporbit.freetype
 
+import freetype.FT_Face
+import freetype.TTAG_MATH
 import kotlinx.cinterop.*
 import platform.posix.free
 
@@ -38,19 +40,21 @@ object FreeTypeIos : IFreeType {
     override fun loadMathTable(face: Long, data: NativeBinaryBuffer, length: Int): Boolean {
         require(data.ptr != null) { "data.ptr is null" }
         return memScoped {
-            val lengthVar = alloc<ULongVar> {
-                value = length.toULong()
-            }
+            val lengthVar = alloc<ULongVar>()
+            val faceCPointer: FT_Face? = face.toCPointer()
+            val tag = TTAG_MATH.toULong()
+            // 先查询 MATH 表的长度
+            freetype.FT_Load_Sfnt_Table(faceCPointer, tag, 0, null, lengthVar.ptr)
+            // 再加载 MATH 表
             val result = freetype.FT_Load_Sfnt_Table(
-                face.toCPointer(),
-                freetype.TTAG_MATH.toULong(),
+                faceCPointer,
+                tag,
                 0,
                 data.ptr?.reinterpret(),
                 lengthVar.ptr
             )
-            result != freetype.FT_Err_Ok.toInt()
+            result == freetype.FT_Err_Ok.toInt()
         }
-//        return freetype.loadMathTable(face, data.ptr?.reinterpret(), length)
     }
 
     override fun faceGetAscender(face: Long): Int {
@@ -296,7 +300,7 @@ object FreeTypeIos : IFreeType {
         return freetype.sizeMetricsGetXScale(sizeMetrics)
     }
 
-    override fun sizeMetricsGetYPPEM(sizeMetrics: Long): Long {
+    override fun sizeMetricsGetYPPEM(sizeMetrics: Long): Int {
         return freetype.sizeMetricsGetYPPEM(sizeMetrics)
     }
 

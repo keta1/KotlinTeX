@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalUnsignedTypes::class)
-
 package com.pvporbit.freetype
 
 
@@ -83,7 +81,7 @@ interface IFreeType {
     fun sizeMetricsGetMaxAdvance(sizeMetrics: Long): Long
     fun sizeMetricsGetXPPEM(sizeMetrics: Long): Int
     fun sizeMetricsGetXScale(sizeMetrics: Long): Long
-    fun sizeMetricsGetYPPEM(sizeMetrics: Long): Long
+    fun sizeMetricsGetYPPEM(sizeMetrics: Long): Int
     fun sizeMetricsGetYScale(sizeMetrics: Long): Long
 
     // ---- GlyphSlot
@@ -130,4 +128,4 @@ interface IFreeType {
     }
 }
 
-expect val FreeType: IFreeType
+internal expect val FreeType: IFreeType

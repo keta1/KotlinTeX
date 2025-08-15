@@ -11,6 +11,6 @@ expect class NativeBinaryBuffer {
     fun remaining(): Int
 
     fun fill(bytes: ByteArray)
-    fun toByteArray(length: Int): ByteArray
+    fun toByteArray(): ByteArray
     fun free()   // 释放内存
 }

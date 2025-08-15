@@ -1,4 +1,7 @@
+import org.gradle.internal.os.OperatingSystem
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.org.apache.commons.lang3.ArchUtils
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -6,6 +9,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.composeHotReload)
 }
 
 kotlin {
@@ -14,7 +18,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -25,9 +29,9 @@ kotlin {
             isStatic = true
         }
     }
-    
+    jvm()
+
     sourceSets {
-        
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -50,8 +54,26 @@ kotlin {
             api(project.dependencies.platform(libs.koin.bom))
             api(libs.bundles.koin)
         }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
+        jvmMain.dependencies {
+            implementation(compose.desktop.currentOs)
+            // 检测平台
+            val currentOs = OperatingSystem.current()
+            val lwjglPlatform = when {
+                currentOs.isMacOsX -> "macos"
+                currentOs.isWindows -> "windows"
+                currentOs.isLinux -> "linux"
+                else -> error("Unsupported OS: $currentOs")
+            }
+            val processor = ArchUtils.getProcessor()
+            val lwjglArch = when {
+                processor.isAarch64 -> "arm64"
+                processor.is64Bit -> "x64"
+                else -> error("Unsupported architecture: ${processor.arch} ${processor.type}")
+            }
+            val lwjglNatives = "natives-$lwjglPlatform-$lwjglArch"
+            // 平台特定的本地库
+            runtimeOnly("org.lwjgl:lwjgl:${libs.versions.lwjgl.get()}:$lwjglNatives")
+            runtimeOnly("org.lwjgl:lwjgl-freetype:${libs.versions.lwjgl.get()}:$lwjglNatives")
         }
     }
 }
@@ -91,6 +113,18 @@ dependencies {
 tasks.configureEach {
     if (name.startsWith("ksp") && name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
+
+compose.desktop {
+    application {
+        mainClass = "io.github.darriousliu.katex.MainKt"
+
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "io.github.darriousliu.katex"
+            packageVersion = "1.0.0"
+        }
     }
 }
 

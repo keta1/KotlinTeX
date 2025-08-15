@@ -52,10 +52,14 @@ object FreeTypeAndroid : IFreeType {
     ): Long
 
     override fun loadMathTable(face: Long, data: NativeBinaryBuffer, length: Int): Boolean {
-        return loadMathTable(face, data.byteBuffer, length)
+        // 先查询 MATH 表的长度
+        val mathTableLength = getMathTableLength(face)
+        return loadMathTable(face, data.byteBuffer, mathTableLength)
     }
 
-    external fun loadMathTable(face: Long, data: ByteBuffer, length: Int): Boolean
+    external fun getMathTableLength(face: Long): Long
+
+    external fun loadMathTable(face: Long, data: ByteBuffer, length: Long): Boolean
 
     external override fun faceGetAscender(face: Long): Int
 
@@ -188,7 +192,7 @@ object FreeTypeAndroid : IFreeType {
 
     external override fun sizeMetricsGetXScale(sizeMetrics: Long): Long
 
-    external override fun sizeMetricsGetYPPEM(sizeMetrics: Long): Long
+    external override fun sizeMetricsGetYPPEM(sizeMetrics: Long): Int
 
     external override fun sizeMetricsGetYScale(sizeMetrics: Long): Long
 

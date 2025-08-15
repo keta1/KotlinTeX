@@ -4,7 +4,7 @@ package com.pvporbit.freetype
 
 import com.pvporbit.freetype.FreeTypeConstants.FT_Kerning_Mode
 
-class Face(pointer: Long) : Utils.Pointer(pointer) {
+class Face(pointer: Long) : Pointer(pointer) {
     private var data: NativeBinaryBuffer? = null
 
     constructor(pointer: Long, data: NativeBinaryBuffer?) : this(pointer) {

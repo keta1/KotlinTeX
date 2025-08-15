@@ -2,7 +2,7 @@ package com.pvporbit.freetype
 
 import com.pvporbit.freetype.FreeTypeConstants.FT_Render_Mode
 
-class GlyphSlot(pointer: Long) : Utils.Pointer(pointer) {
+class GlyphSlot(pointer: Long) : Pointer(pointer) {
     val bitmap: Bitmap?
         get() {
             val bitmap = FreeType.glyphSlotGetBitmap(pointer)

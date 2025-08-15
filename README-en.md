@@ -6,7 +6,7 @@
 [![Kotlin](https://img.shields.io/badge/kotlin-multiplatform-blue.svg?logo=kotlin)]([http://kotlinlang.org](https://www.jetbrains.com/kotlin-multiplatform/))
 
 A cross-platform LaTeX mathematical expression rendering library based on Kotlin Multiplatform,
-supporting Android and iOS platforms.
+supporting Android / iOS / Jvm platforms.
 
 ## Display
 
@@ -18,21 +18,24 @@ This project is rewritten based on the open-source project
 [**AndroidMath**](https://github.com/gregcockroft/AndroidMath),
 converting all code to Kotlin and implementing cross-platform support using Kotlin Multiplatform
 technology. It provides high-quality LaTeX mathematical expression rendering functionality for
-Android and iOS platforms through Compose Multiplatform.
+Android / iOS / Jvm platforms through Compose Multiplatform.
 
 ## Features
 
-- 🚀 Based on Kotlin Multiplatform technology, integrating with FreeType library through JNI on
-  Android and C interop on iOS
-- 📱 Supports Android and iOS platforms
+- 🚀 Based on Kotlin Multiplatform technology
+    - Android integrates FreeType library via JNI
+    - iOS integrates FreeType library via C interop
+    - JVM platform integrates FreeType library via lwjgl library
+- 📱 Supports Android / iOS / Jvm platforms
 - 🎨 UI rendering using Compose Multiplatform
 - 📊 Complete LaTeX mathematical expression support
 - 🔧 Easy integration and usage
 
 ## Platform Support
 
-- ✅ Android (API 23+)
+- ✅ Android (API 23+), already adapted for 16KB Page Size
 - ✅ iOS (iOS 13+)
+- ✅ JVM (Compose MultiplatformDesktop applications)
 
 ## Dependencies
 
@@ -54,7 +57,7 @@ Then, add the dependency in your `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("io.github.darriousliu:katex:0.2.1")
+    implementation("io.github.darriousliu:katex:0.3.0")
 }
 ```
 
@@ -64,7 +67,7 @@ dependencies {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.darriousliu:katex:0.2.1")
+            implementation("io.github.darriousliu:katex:0.3.0")
         }
     }
 }
@@ -75,6 +78,35 @@ kotlin {
 Please ensure your project is properly configured with Kotlin Multiplatform and Compose
 Multiplatform.
 
+### JVM Platform Specific Configuration
+
+When using on the JVM platform, you need to add platform-specific FreeType native library
+dependencies:
+
+```kotlin
+jvmMain.dependencies {
+    implementation(compose.desktop.currentOs)
+    // Detect platform
+    val currentOs = OperatingSystem.current()
+    val lwjglPlatform = when {
+        currentOs.isMacOsX -> "macos"
+        currentOs.isWindows -> "windows"
+        currentOs.isLinux -> "linux"
+        else -> error("Unsupported OS: $currentOs")
+    }
+    val processor = ArchUtils.getProcessor()
+    val lwjglArch = when {
+        processor.isAarch64 -> "arm64"
+        processor.is64Bit -> "x64"
+        else -> error("Unsupported architecture: ${processor.arch} ${processor.type}")
+    }
+    val lwjglNatives = "natives-$lwjglPlatform-$lwjglArch"
+    // Platform-specific native libraries
+    runtimeOnly("org.lwjgl:lwjgl:${version}:$lwjglNatives")
+    runtimeOnly("org.lwjgl:lwjgl-freetype:${version}:$lwjglNatives")
+}
+```
+
 ## Usage
 
 1. Direct usage with LaTeX string
@@ -83,15 +115,15 @@ Multiplatform.
 @Composable
 fun LatexExample() {
     MTMathView(
-      latex = "\\frac{a}{b}",
-      modifier = Modifier.fillMaxWidth(),
-      fontSize = 20.sp,
-      textColor = Color.Black,
-      font = null,
-      mode = MTMathViewMode.KMTMathViewModeDisplay,
-      textAlignment = MTTextAlignment.KMTTextAlignmentLeft,
-      displayErrorInline = true,
-      errorFontSize = 20.sp,
+        latex = "\\frac{a}{b}",
+        modifier = Modifier.fillMaxWidth(),
+        fontSize = 20.sp,
+        textColor = Color.Black,
+        font = null,
+        mode = MTMathViewMode.KMTMathViewModeDisplay,
+        textAlignment = MTTextAlignment.KMTTextAlignmentLeft,
+        displayErrorInline = true,
+        errorFontSize = 20.sp,
     )
 }
 ```
@@ -170,6 +202,11 @@ cd external/freetype
 # Build FreeType library
 ./build-ios-cmake.sh
 ```
+
+### CI/CD Configuration
+
+For JVM applications distributed on different platforms, the appropriate local library is
+automatically selected by building on different platforms (Windows/macOS/Linux).
 
 ## Acknowledgments
 

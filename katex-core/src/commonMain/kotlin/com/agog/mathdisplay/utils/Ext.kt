@@ -1,7 +1,7 @@
 package com.agog.mathdisplay.utils
 
 // 保留n位小数
-fun Float.toFixed(n: Int): String {
+internal fun Float.toFixed(n: Int): String {
     val str = this.toString()
     val dotIndex = str.indexOf('.')
     return if (dotIndex == -1) {

@@ -41,9 +41,15 @@ Java_com_pvporbit_freetype_FreeTypeAndroid_newMemoryFace(JNIEnv *env, jobject th
 }
 
 extern "C"
+JNIEXPORT jlong JNICALL
+Java_com_pvporbit_freetype_FreeTypeAndroid_getMathTableLength(JNIEnv *env, jobject thiz, jlong face) {
+    return getMathTableLength(face);
+}
+
+extern "C"
 JNIEXPORT jboolean JNICALL
 Java_com_pvporbit_freetype_FreeTypeAndroid_loadMathTable(JNIEnv *env, jobject thiz, jlong face,
-                                                         jobject data, jint length) {
+                                                         jobject data, jlong length) {
     char *buffer = (char *) (data ? env->GetDirectBufferAddress(data) : nullptr);
     return loadMathTable(face, buffer, length);
 }
@@ -394,7 +400,7 @@ Java_com_pvporbit_freetype_FreeTypeAndroid_sizeMetricsGetXScale(JNIEnv *env, job
 }
 
 extern "C"
-JNIEXPORT jlong JNICALL
+JNIEXPORT jint JNICALL
 Java_com_pvporbit_freetype_FreeTypeAndroid_sizeMetricsGetYPPEM(JNIEnv *env, jobject thiz,
                                                                jlong size_metrics) {
     return sizeMetricsGetYPPEM(size_metrics);

@@ -1,6 +1,6 @@
 package com.pvporbit.freetype
 
-object Utils {
+internal object Utils {
     fun isHighSurrogate(c: Char) = (c.code in 0xD800..0xDBFF)
 
     fun isLowSurrogate(c: Char) = (c.code in 0xDC00..0xDFFF)
@@ -21,12 +21,14 @@ object Utils {
             in 0..0xFFFF -> {
                 charArrayOf(codePoint.toChar())
             }
+
             in 0x10000..0x10FFFF -> {
                 val cpPrime = codePoint - 0x10000
                 val high = 0xD800 + (cpPrime shr 10)
                 val low = 0xDC00 + (cpPrime and 0x3FF)
                 charArrayOf(high.toChar(), low.toChar())
             }
+
             else -> {
                 throw IllegalArgumentException("Invalid Unicode code point: $codePoint")
             }
@@ -62,7 +64,6 @@ object Utils {
             else -> throw IllegalArgumentException("Invalid Unicode code point: $codePoint")
         }
 
-    open class Pointer(val pointer: Long)
 }
 
 expect fun readAssetFile(path: String): ByteArray

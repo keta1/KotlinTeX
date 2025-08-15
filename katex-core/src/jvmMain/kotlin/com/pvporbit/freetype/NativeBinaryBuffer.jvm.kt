@@ -1,5 +1,6 @@
 package com.pvporbit.freetype
 
+import org.lwjgl.system.MemoryUtil
 import java.nio.ByteBuffer
 
 actual class NativeBinaryBuffer constructor(
@@ -43,5 +44,6 @@ actual class NativeBinaryBuffer constructor(
     }
 
     actual fun free() {
+        MemoryUtil.memFree(byteBuffer)
     }
 }

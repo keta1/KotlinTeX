@@ -5,7 +5,7 @@
 [![许可证](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
 [![Kotlin](https://img.shields.io/badge/kotlin-multiplatform-blue.svg?logo=kotlin)]([http://kotlinlang.org](https://www.jetbrains.com/kotlin-multiplatform/))
 
-一个基于 Kotlin Multiplatform 的跨平台 LaTeX 数学表达式渲染库，支持 Android 和 iOS 平台。
+一个基于 Kotlin Multiplatform 的跨平台 LaTeX 数学表达式渲染库，支持 Android / iOS / Jvm 平台。
 
 ## 效果展示
 
@@ -15,20 +15,24 @@ https://github.com/user-attachments/assets/1f8a57a2-8610-44c8-b33d-4a1b4dbf6a34
 
 本项目基于开源项目 [**AndroidMath**](https://github.com/gregcockroft/AndroidMath)
 改写而来，将所有代码转换为 Kotlin 并使用 Kotlin Multiplatform 技术实现跨平台支持。通过 Compose
-Multiplatform 为 Android 和 iOS 平台提供高质量的 LaTeX 数学表达式渲染功能。
+Multiplatform 为 Android / iOS / Jvm 平台提供高质量的 LaTeX 数学表达式渲染功能。
 
 ## 特性
 
-- 🚀 基于 Kotlin Multiplatform 技术，Android通过JNI、iOS通过C interop与 FreeType 库集成
-- 📱 支持 Android 和 iOS 平台
+- 🚀 基于 Kotlin Multiplatform 技术
+    - Android 通过 JNI 与 FreeType 库集成
+    - iOS 通过 C interop 与 FreeType 库集成
+    - JVM 平台通过 lwjgl 库与 FreeType 库集成
+- 📱 支持 Android / iOS / Jvm 平台
 - 🎨 使用 Compose Multiplatform 进行 UI 渲染
 - 📊 完整的 LaTeX 数学表达式支持
 - 🔧 易于集成和使用
 
 ## 平台支持
 
-- ✅ Android (API 23+)
+- ✅ Android (API 23+)，已适配16KB Page Size
 - ✅ iOS (iOS 13+)
+- ✅ JVM (Compose Multiplatform 桌面应用)
 
 ## 依赖
 
@@ -50,7 +54,7 @@ pluginManagement {
 
 ```kotlin
 dependencies {
-    implementation("io.github.darriousliu:katex:0.2.1")
+    implementation("io.github.darriousliu:katex:0.3.0")
 }
 ```
 
@@ -60,7 +64,7 @@ dependencies {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.darriousliu:katex:0.2.1")
+            implementation("io.github.darriousliu:katex:0.3.0")
         }
     }
 }
@@ -69,6 +73,34 @@ kotlin {
 ### 项目配置
 
 请确保您的项目已正确配置 Kotlin Multiplatform 和 Compose Multiplatform。
+
+### JVM平台特定配置
+
+在JVM平台上使用时，需要添加平台特定的FreeType本地库依赖：
+
+```kotlin
+jvmMain.dependencies {
+    implementation(compose.desktop.currentOs)
+    // 检测平台
+    val currentOs = OperatingSystem.current()
+    val lwjglPlatform = when {
+        currentOs.isMacOsX -> "macos"
+        currentOs.isWindows -> "windows"
+        currentOs.isLinux -> "linux"
+        else -> error("Unsupported OS: $currentOs")
+    }
+    val processor = ArchUtils.getProcessor()
+    val lwjglArch = when {
+        processor.isAarch64 -> "arm64"
+        processor.is64Bit -> "x64"
+        else -> error("Unsupported architecture: ${processor.arch} ${processor.type}")
+    }
+    val lwjglNatives = "natives-$lwjglPlatform-$lwjglArch"
+    // 平台特定的本地库
+    runtimeOnly("org.lwjgl:lwjgl:${版本号}:$lwjglNatives")
+    runtimeOnly("org.lwjgl:lwjgl-freetype:${版本号}:$lwjglNatives")
+}
+```
 
 ## 使用方法
 
@@ -163,6 +195,10 @@ cd external/freetype
 # 构建 FreeType 库
 ./build-ios-cmake.sh
 ```
+
+### CI/CD 配置
+
+对于分发不同平台的JVM应用，通过在不同平台（Windows/macOS/Linux）上构建来自动选择合适的本地库。
 
 ## 致谢
 

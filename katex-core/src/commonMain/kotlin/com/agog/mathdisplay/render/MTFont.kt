@@ -35,7 +35,7 @@ class MTFont(
             i += Utils.charCount(codepoint)
             val gid = mathTable.getGlyphForCodepoint(codepoint)
             if (gid == 0) {
-                println("getGidListForString codepoint $codepoint mapped to missing glyph")
+                println("getGidListForString codepoint ${codepoint.toHexString()} ${codepoint.toChar()} mapped to missing glyph")
             }
             ret.add(gid)
         }

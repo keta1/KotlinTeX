@@ -3,7 +3,7 @@ package com.pvporbit.freetype
 /**
  * Each library is completely independent from the others; it is the root of a set of objects like fonts, faces, sizes, etc.
  */
-class Library(pointer: Long) : Utils.Pointer(pointer) {
+class Library(pointer: Long) : Pointer(pointer) {
     /**
      * Destroy the library object and all of it's childrens, including faces, sizes, etc.
      */
