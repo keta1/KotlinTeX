@@ -45,7 +45,7 @@ fun LatexScreen(
         modifier = modifier,
         topBar = {
             TopAppBar(
-                title = { Text("CommonMark Kotlin") },
+                title = { Text("KotlinTex") },
                 actions = {
                     // 改变字体
                     MenuAction(
