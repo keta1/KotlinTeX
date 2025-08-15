@@ -80,24 +80,25 @@ kotlin {
 
 ```kotlin
 jvmMain.dependencies {
+    implementation(compose.desktop.currentOs)
     // 检测平台
-    val lwjglNatives = when (System.getProperty("os.name")) {
-        "Mac OS X" -> when (System.getProperty("os.arch")) {
-            "aarch64" -> "natives-macos-arm64"
-            else -> "natives-macos-x64"
-        }
-        "Linux" -> when (System.getProperty("os.arch")) {
-            "aarch64" -> "natives-linux-arm64"
-            else -> "natives-linux-x64"
-        }
-        else -> when (System.getProperty("os.arch").contains("64")) {
-            true -> "natives-windows-x64"
-            false -> "natives-windows-x86"
-        }
+    val currentOs = OperatingSystem.current()
+    val lwjglPlatform = when {
+        currentOs.isMacOsX -> "macos"
+        currentOs.isWindows -> "windows"
+        currentOs.isLinux -> "linux"
+        else -> error("Unsupported OS: $currentOs")
     }
+    val processor = ArchUtils.getProcessor()
+    val lwjglArch = when {
+        processor.isAarch64 -> "arm64"
+        processor.is64Bit -> "x64"
+        else -> error("Unsupported architecture: ${processor.arch} ${processor.type}")
+    }
+    val lwjglNatives = "natives-$lwjglPlatform-$lwjglArch"
     // 平台特定的本地库
-    runtimeOnly("org.lwjgl:lwjgl:版本号:$lwjglNatives")
-    runtimeOnly("org.lwjgl:lwjgl-freetype:版本号:$lwjglNatives")
+    runtimeOnly("org.lwjgl:lwjgl:${版本号}:$lwjglNatives")
+    runtimeOnly("org.lwjgl:lwjgl-freetype:${版本号}:$lwjglNatives")
 }
 ```
 
@@ -195,38 +196,9 @@ cd external/freetype
 ./build-ios-cmake.sh
 ```
 
-### CI/CD 配置示例
+### CI/CD 配置
 
-在CI/CD环境中可以使用以下配置来构建不同平台的产物：
-
-```kotlin
-// build.gradle.kts
-
-val targetOs = findProperty("targetOs") ?: "linux" // 或者 "windows" 或 "macos"
-val targetArch = findProperty("targetArch") ?: "x64" // 或者 "arm64"
-val lwjglVersion = "3.3.6"
-
-kotlin {
-    sourceSets {
-        jvmMain.dependencies {
-            // 根据传入的target和arch参数确定本地库依赖
-            val nativeTarget = "natives-$targetOs-$targetArch"
-       
-            runtimeOnly("org.lwjgl:lwjgl:$lwjglVersion:$nativeTarget")
-            runtimeOnly("org.lwjgl:lwjgl-freetype:$lwjglVersion:$nativeTarget")
-        }
-    }
-}
-```
-
-对于分发不同平台的JVM应用，可以在 CI/CD 环境中设置 `targetOs` 和 `targetArch` 参数来自动选择合适的本地库。
-
-```shell
-./gradlew ... -PtargetOs=linux -PtargetArch=x64
-./gradlew ... -PtargetOs=windows -PtargetArch=x64
-./gradlew ... -PtargetOs=macos -PtargetArch=arm64
-./gradlew ... -PtargetOs=macos -PtargetArch=x64
-```
+对于分发不同平台的JVM应用，通过在不同平台（Windows/macOS/Linux）上构建来自动选择合适的本地库。
 
 ## 致谢
 

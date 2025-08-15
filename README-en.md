@@ -85,24 +85,25 @@ dependencies:
 
 ```kotlin
 jvmMain.dependencies {
+    implementation(compose.desktop.currentOs)
     // Detect platform
-    val lwjglNatives = when (System.getProperty("os.name")) {
-        "Mac OS X" -> when (System.getProperty("os.arch")) {
-            "aarch64" -> "natives-macos-arm64"
-            else -> "natives-macos-x64"
-        }
-        "Linux" -> when (System.getProperty("os.arch")) {
-            "aarch64" -> "natives-linux-arm64"
-            else -> "natives-linux-x64"
-        }
-        else -> when (System.getProperty("os.arch").contains("64")) {
-            true -> "natives-windows-x64"
-            false -> "natives-windows-x86"
-        }
+    val currentOs = OperatingSystem.current()
+    val lwjglPlatform = when {
+        currentOs.isMacOsX -> "macos"
+        currentOs.isWindows -> "windows"
+        currentOs.isLinux -> "linux"
+        else -> error("Unsupported OS: $currentOs")
     }
+    val processor = ArchUtils.getProcessor()
+    val lwjglArch = when {
+        processor.isAarch64 -> "arm64"
+        processor.is64Bit -> "x64"
+        else -> error("Unsupported architecture: ${processor.arch} ${processor.type}")
+    }
+    val lwjglNatives = "natives-$lwjglPlatform-$lwjglArch"
     // Platform-specific native libraries
-    runtimeOnly("org.lwjgl:lwjgl:version:$lwjglNatives")
-    runtimeOnly("org.lwjgl:lwjgl-freetype:version:$lwjglNatives")
+    runtimeOnly("org.lwjgl:lwjgl:${version}:$lwjglNatives")
+    runtimeOnly("org.lwjgl:lwjgl-freetype:${version}:$lwjglNatives")
 }
 ```
 
@@ -202,40 +203,10 @@ cd external/freetype
 ./build-ios-cmake.sh
 ```
 
-### CI/CD Configuration Example
+### CI/CD Configuration
 
-You can use the following configuration to build artifacts for different platforms in a CI/CD
-environment:
-
-```kotlin
-// build.gradle.kts
-
-val targetOs = findProperty("targetOs") ?: "linux" // or "windows" or "macos"
-val targetArch = findProperty("targetArch") ?: "x64" // or "arm64"
-val lwjglVersion = "3.3.6"
-
-kotlin {
-    sourceSets {
-        jvmMain.dependencies {
-            // Determine native library dependencies based on target and arch parameters
-            val nativeTarget = "natives-$targetOs-$targetArch"
-
-            runtimeOnly("org.lwjgl:lwjgl:$lwjglVersion:$nativeTarget")
-            runtimeOnly("org.lwjgl:lwjgl-freetype:$lwjglVersion:$nativeTarget")
-        }
-    }
-}
-```
-
-To distribute JVM applications for different platforms, you can set the `targetOs` and `targetArch`
-parameters in the CI/CD environment to automatically select the appropriate native libraries.
-
-```shell
-./gradlew ... -PtargetOs=linux -PtargetArch=x64
-./gradlew ... -PtargetOs=windows -PtargetArch=x64
-./gradlew ... -PtargetOs=macos -PtargetArch=arm64
-./gradlew ... -PtargetOs=macos -PtargetArch=x64
-```
+For JVM applications distributed on different platforms, the appropriate local library is
+automatically selected by building on different platforms (Windows/macOS/Linux).
 
 ## Acknowledgments
 

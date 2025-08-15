@@ -1,5 +1,7 @@
+import org.gradle.internal.os.OperatingSystem
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.org.apache.commons.lang3.ArchUtils
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -53,23 +55,22 @@ kotlin {
             api(libs.bundles.koin)
         }
         jvmMain.dependencies {
+            implementation(compose.desktop.currentOs)
             // 检测平台
-            val lwjglNatives = when (System.getProperty("os.name")) {
-                "Mac OS X" -> when (System.getProperty("os.arch")) {
-                    "aarch64" -> "natives-macos-arm64"
-                    else -> "natives-macos-x64"
-                }
-
-                "Linux" -> when (System.getProperty("os.arch")) {
-                    "aarch64" -> "natives-linux-arm64"
-                    else -> "natives-linux-x64"
-                }
-
-                else -> when (System.getProperty("os.arch").contains("64")) {
-                    true -> "natives-windows-x64"
-                    false -> "natives-windows-x86"
-                }
+            val currentOs = OperatingSystem.current()
+            val lwjglPlatform = when {
+                currentOs.isMacOsX -> "macos"
+                currentOs.isWindows -> "windows"
+                currentOs.isLinux -> "linux"
+                else -> error("Unsupported OS: $currentOs")
             }
+            val processor = ArchUtils.getProcessor()
+            val lwjglArch = when {
+                processor.isAarch64 -> "arm64"
+                processor.is64Bit -> "x64"
+                else -> error("Unsupported architecture: ${processor.arch} ${processor.type}")
+            }
+            val lwjglNatives = "natives-$lwjglPlatform-$lwjglArch"
             // 平台特定的本地库
             runtimeOnly("org.lwjgl:lwjgl:${libs.versions.lwjgl.get()}:$lwjglNatives")
             runtimeOnly("org.lwjgl:lwjgl-freetype:${libs.versions.lwjgl.get()}:$lwjglNatives")
