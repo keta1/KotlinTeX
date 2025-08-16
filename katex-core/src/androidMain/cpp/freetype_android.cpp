@@ -179,8 +179,8 @@ Java_com_pvporbit_freetype_FreeTypeAndroid_getKerning(JNIEnv *env, jobject thiz,
     long *kerning = getKerning(face, left, right, mode);
     jclass cls = env->FindClass("com/pvporbit/freetype/Kerning");
     jmethodID methodID = env->GetMethodID(cls, "<init>", "(JJ)V");
-    long x = kerning[0];
-    long y = kerning[1];
+    jlong x = kerning[0];
+    jlong y = kerning[1];
     jobject kerningObj = env->NewObject(cls, methodID, x, y);
     delete[] kerning; // Clean up the allocated memory
     return kerningObj;
@@ -598,4 +598,14 @@ extern "C"
 JNIEXPORT jobject JNICALL
 Java_com_pvporbit_freetype_FreeTypeAndroid_newNativeBuffer(JNIEnv *env, jobject thiz, jint size) {
     return env->NewDirectByteBuffer((char *) malloc(size), size);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_pvporbit_freetype_FreeTypeAndroid_deleteNativeBuffer(JNIEnv *env, jobject thiz,
+                                                        jobject buffer) {
+    char *b = (char *) (buffer ? env->GetDirectBufferAddress(buffer) : nullptr);
+    if (b) {
+        free(b);
+    }
 }

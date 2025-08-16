@@ -335,6 +335,8 @@ open class MTMathAtomFactory {
 
     private val supportedLatexSymbols: HashMap<String, MTMathAtom> = hashMapOf(
         "square" to placeholder(),
+        "Box" to placeholder(),
+        "blacksquare" to MTMathAtom(MTMathAtomType.KMTMathAtomPlaceholder, MTSymbolBlackSquare),
 
         // Greek characters
         "alpha" to MTMathAtom(MTMathAtomType.KMTMathAtomVariable, "\u03B1"),
@@ -576,6 +578,9 @@ open class MTMathAtomFactory {
         "cdots" to MTMathAtom(MTMathAtomType.KMTMathAtomOrdinary, "\u22EF"),
         "ddots" to MTMathAtom(MTMathAtomType.KMTMathAtomOrdinary, "\u22F1"),
         "triangle" to MTMathAtom(MTMathAtomType.KMTMathAtomOrdinary, "\u25B3"),
+        "diamond" to MTMathAtom(MTMathAtomType.KMTMathAtomOrdinary, "\u2662"),
+        "surd" to MTMathAtom(MTMathAtomType.KMTMathAtomOrdinary, "\u221A"),
+        "cbrt" to MTMathAtom(MTMathAtomType.KMTMathAtomOrdinary, "\u221B"),
         // These expand into 2 unicode chars
         "imath" to MTMathAtom(MTMathAtomType.KMTMathAtomOrdinary, "\uD835\uDEA4"),
         "jmath" to MTMathAtom(MTMathAtomType.KMTMathAtomOrdinary, "\uD835\uDEA5"),

@@ -64,6 +64,7 @@ object FreeTypeJvm : IFreeType {
     ): Boolean {
         val face = getFaceFromCache(face)
         val lengthVar = MemoryUtil.memAllocCLong(1)
+        lengthVar.put(0, 0)
         // 先查询 MATH 表的长度
         FT_Load_Sfnt_Table(face, TTAG_MATH.toLong(), 0, null, lengthVar)
         // 再加载 MATH 表

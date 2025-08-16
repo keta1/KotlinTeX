@@ -2,10 +2,10 @@ package io.github.darriousliu.katex.latex
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.github.darriousliu.katex.core.MathItem
 import com.agog.mathdisplay.parse.*
 import com.agog.mathdisplay.render.MTTypesetter
 import com.agog.mathdisplay.utils.MTFontManager
+import io.github.darriousliu.katex.core.MathItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -222,6 +222,26 @@ x \mathrm x \mathbf x \mathcal X \mathfrak x \mathsf x \bm x \mathtt x \mathit \
 a = \begin{cases} \nabla \cdot \mathbf{E} = \frac{\rho}{\epsilon_0} \end{cases}
 
 \nabla \cdot \mathbf{E} = \frac{\rho}{\epsilon_0}
+
+\diamond = \frac{1}{2} \sqrt{3} a^2
+
+# surd
+\surd{2} + \surd{3} = \surd{5}
+
+# cbrt
+\cbrt{8} + \cbrt{27} = \cbrt{35}
+
+# angle
+\angle ABC = 90^\degree 90^\circ
+
+# square
+\square{2} + \square{3} = \square{5}
+\blacksquare{2} + \blacksquare{3} = \blacksquare{5}
+
+# box
+\Box{2} + \Box{3} = \Box{5}
+\boxed{2} + \boxed{3} = \boxed{5}
+
 """.lines()
     .filter { !it.startsWith("#") && it.isNotBlank() }
     .distinct()

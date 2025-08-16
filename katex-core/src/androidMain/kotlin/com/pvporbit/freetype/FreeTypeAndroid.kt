@@ -258,4 +258,6 @@ object FreeTypeAndroid : IFreeType {
     }
 
     external fun newNativeBuffer(size: Int): ByteBuffer
+
+    external fun deleteNativeBuffer(byteBuffer: ByteBuffer)
 }

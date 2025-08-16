@@ -43,5 +43,6 @@ actual class NativeBinaryBuffer constructor(
     }
 
     actual fun free() {
+        FreeTypeAndroid.deleteNativeBuffer(byteBuffer)
     }
 }
