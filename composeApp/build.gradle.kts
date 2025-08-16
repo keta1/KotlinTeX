@@ -67,13 +67,13 @@ kotlin {
             val processor = ArchUtils.getProcessor()
             val lwjglArch = when {
                 processor.isAarch64 -> "arm64"
-                processor.is64Bit -> "x64"
+                processor.is64Bit -> ""
                 else -> error("Unsupported architecture: ${processor.arch} ${processor.type}")
             }
-            val lwjglNatives = "natives-$lwjglPlatform-$lwjglArch"
+            val lwjglNatives = "natives-$lwjglPlatform-$lwjglArch".trim('-')
             // 平台特定的本地库
-            runtimeOnly("org.lwjgl:lwjgl:${libs.versions.lwjgl.get()}:$lwjglNatives")
-            runtimeOnly("org.lwjgl:lwjgl-freetype:${libs.versions.lwjgl.get()}:$lwjglNatives")
+            implementation("org.lwjgl:lwjgl:${libs.versions.lwjgl.get()}:$lwjglNatives")
+            implementation("org.lwjgl:lwjgl-freetype:${libs.versions.lwjgl.get()}:$lwjglNatives")
         }
     }
 }
